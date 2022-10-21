@@ -19,13 +19,13 @@ public class WarehouseRestController {
     }
 
     // expose "/warehouses" and return list of warehouses
-    @GetMapping("/warehouses")
+    @GetMapping("/warehouse")
     public List<Warehouse> findAll() {
         return warehouseService.findAll();
     }
 
     //  add mapping for GET /employees/{employeeId}
-    @GetMapping("/warehouses/{warehouseId}")
+    @GetMapping("/warehouse/{warehouseId}")
     public Warehouse getWarehouse(@PathVariable Long warehouseId) {
 
         Warehouse theWarehouse = warehouseService.findById(warehouseId);
@@ -38,7 +38,7 @@ public class WarehouseRestController {
     }
 
     // add mapping for POST /employees = add new employee
-    @PostMapping("/warehouses")
+    @PostMapping("/warehouse")
     public Warehouse addEmployee(@RequestBody Warehouse theWarehouse) {
         // also just in case the pass an ID in JSON ... set id to 0
 
@@ -60,7 +60,7 @@ public class WarehouseRestController {
     }
 
     // add mapping for DELETE /employees/{employeeId} = delete existing employee
-    @DeleteMapping("/warehouses/{warehouseId}")
+    @DeleteMapping("/warehouse/{warehouseId}")
     public String deleteWarehouse(@PathVariable Long warehouseId) {
 
         Warehouse tempWarehouse = warehouseService.findById(warehouseId);
