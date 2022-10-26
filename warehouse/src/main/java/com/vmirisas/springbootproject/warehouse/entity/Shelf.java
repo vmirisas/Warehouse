@@ -26,6 +26,11 @@ public class Shelf {
     @Column(name = "shelf_code")
     private String shelfCode;
 
+    @ManyToOne (fetch = FetchType.LAZY,
+                cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH})
     @Column(name = "warehouse_id")
     private Long warehouseId;
 

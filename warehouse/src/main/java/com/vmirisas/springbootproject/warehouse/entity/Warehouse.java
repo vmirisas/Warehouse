@@ -30,7 +30,11 @@ public class Warehouse {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany (fetch = FetchType.LAZY,
+                cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH})
     @JoinColumn(name = "warehouse_id")
     private List<Shelf> shelves;
 

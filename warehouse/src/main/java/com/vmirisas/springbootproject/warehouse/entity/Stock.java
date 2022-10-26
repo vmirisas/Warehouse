@@ -21,11 +21,19 @@ public class Stock {
     @Column(name = "id")
     private Long id;
 
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
     @Column(name = "shelf_code")
     private String shelfCode;
 
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
     @Column(name = "barcode")
-    private String barcode;
+    private String barcode;;
 
     @Column(name = "quantity")
     private int quantity;
