@@ -1,6 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.rest;
 
-import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
+import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 import com.vmirisas.springbootproject.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,24 +11,22 @@ import java.util.List;
 @RequestMapping("/api")
 public class WarehouseRestController {
 
+    @Autowired
     private WarehouseService warehouseService;
 
-    @Autowired
-    public WarehouseRestController (WarehouseService theWarehouseService) {
-        warehouseService = theWarehouseService;
-    }
 
     // expose "/warehouses" and return list of warehouses
     @GetMapping("/warehouse")
-    public List<Warehouse> findAll() {
+    public List<WarehouseDTO> findAll() {
         return warehouseService.findAll();
     }
 
-    //  add mapping for GET /employees/{employeeId}
-    @GetMapping("/warehouse/{warehouseId}")
-    public Warehouse getWarehouse(@PathVariable Long warehouseId) {
 
-        Warehouse theWarehouse = warehouseService.findById(warehouseId);
+    //  add mapping for GET /warehouses/{warehouseId}
+    @GetMapping("/warehouse/{warehouseId}")
+    public WarehouseDTO getWarehouse(@PathVariable Long warehouseId) {
+
+        WarehouseDTO theWarehouse = warehouseService.findById(warehouseId);
 
         if(theWarehouse == null) {
             throw new RuntimeException("Warehouse id not found - " + warehouseId);
@@ -37,10 +35,11 @@ public class WarehouseRestController {
         return theWarehouse;
     }
 
-    // add mapping for POST /employees = add new employee
+    // add mapping for POST /warehouses = add new warehouse
     @PostMapping("/warehouse")
-    public Warehouse addEmployee(@RequestBody Warehouse theWarehouse) {
-        // also just in case the pass an ID in JSON ... set id to 0
+    public WarehouseDTO addWarehouse(@RequestBody WarehouseDTO theWarehouse) {
+        // also just in case the pass an ID in JSON ... set id to null
+
 
         theWarehouse.setId(0);
 
@@ -50,20 +49,20 @@ public class WarehouseRestController {
 
     }
 
-    // add mapping for PUT /employees = update existing employee
+    // add mapping for PUT /warehouses = update existing warehouse
     @PutMapping("/warehouse")
-    public Warehouse updateWarehouse(@RequestBody Warehouse theWarehouse) {
+    public WarehouseDTO updateWarehouse(@RequestBody WarehouseDTO theWarehouse) {
 
         warehouseService.save(theWarehouse);
 
         return theWarehouse;
     }
 
-    // add mapping for DELETE /employees/{employeeId} = delete existing employee
+    // add mapping for DELETE /warehouses/{warehouseId} = delete existing warehouse
     @DeleteMapping("/warehouse/{warehouseId}")
     public String deleteWarehouse(@PathVariable Long warehouseId) {
 
-        Warehouse tempWarehouse = warehouseService.findById(warehouseId);
+        WarehouseDTO tempWarehouse = warehouseService.findById(warehouseId);
 
         if (tempWarehouse == null) {
 

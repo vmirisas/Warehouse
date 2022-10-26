@@ -42,7 +42,7 @@ CREATE TABLE `shelf` (
 
 DROP TABLE IF EXISTS `product_shelf`;
 
-CREATE TABLE `product_shelf` (
+CREATE TABLE `stock` (
   `product_id` bigint(20) NOT NULL,
   `shelf_id` bigint(20) NOT NULL,
   
@@ -57,5 +57,31 @@ CREATE TABLE `product_shelf` (
   REFERENCES `shelf` (`id`) 
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `warehouse_management`.`transaction_form` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `stock_id` BIGINT(20) NULL,
+  `type` VARCHAR(45) NULL,
+  `date` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  INDEX `FK_STOCK_ID_idx` (`stock_id` ASC),
+  CONSTRAINT `FK_STOCK_ID`
+    FOREIGN KEY (`stock_id`)
+    REFERENCES `warehouse_management`.`stock` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `warehouse_management`.`form_detail` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `transaction_form_id` BIGINT(20) NULL,
+  `shelf_code` VARCHAR(45) NULL,
+  `barcode` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `FK_BARCODE_idx` (`barcode` ASC),
+  CONSTRAINT `FK_BARCODE`
+    FOREIGN KEY (`barcode`)
+    REFERENCES `warehouse_management`.`product` (`barcode`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,46 +1,55 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
-import com.vmirisas.springbootproject.warehouse.dao.WarehouseRepository;
+import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
+import com.vmirisas.springbootproject.warehouse.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class WarehouseServiceImpl implements WarehouseService{
-
+@Autowired
     private WarehouseRepository warehouseRepository;
 
-    @Autowired
-    public WarehouseServiceImpl(WarehouseRepository theWarehouseRepository) {
-        warehouseRepository = theWarehouseRepository;
-    }
+
     @Override
-    public List<Warehouse> findAll() {
-        return warehouseRepository.findAll();
+    public List<WarehouseDTO> findAll() {
+
+        List <Warehouse> warehouseList = warehouseRepository.findAll();
+        List <WarehouseDTO> warehouseDTOList = new ArrayList<>();
+
+
+        for (Warehouse warehouse:warehouseList) {
+            warehouseDTOList.add(new WarehouseDTO(warehouse));
+        }
+
+        return warehouseDTOList;
     }
 
     @Override
-    public Warehouse findById(Long theId) {
+    public WarehouseDTO findById(Long theId) {
         Optional<Warehouse> result = warehouseRepository.findById(theId);
 
-        Warehouse theWarehouse = null;
+        WarehouseDTO theWarehouse ;
 
         if (result.isPresent()) {
-            theWarehouse = result.get();
+
+            theWarehouse = new WarehouseDTO(result.get()) ;
         } else {
-            // we didn't find the employee
-            throw new RuntimeException("Did not find employee id - " + theId);
+            // we didn't find the warehouse
+            throw new RuntimeException("Did not find warehouse id - " + theId);
         }
 
         return theWarehouse;
     }
 
     @Override
-    public void save(Warehouse theWarehouse) {
-        warehouseRepository.save(theWarehouse);
+    public void save(WarehouseDTO theWarehouse) {
+        warehouseRepository.save(new Warehouse(theWarehouse));
     }
 
     @Override

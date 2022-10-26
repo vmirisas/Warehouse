@@ -1,11 +1,14 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,7 +19,6 @@ import javax.persistence.*;
 public class Warehouse {
 
     // define fields
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,10 +30,13 @@ public class Warehouse {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "warehouse_id")
+    private List<Shelf> shelves;
+
     // define constructors
     // define getter/setter
     // define toString
-
     @Override
     public String toString() {
         return "Warehouse{" +
@@ -40,4 +45,9 @@ public class Warehouse {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    public Warehouse(WarehouseDTO dto) {
+        BeanUtils.copyProperties(dto, this);
+    }
+
 }

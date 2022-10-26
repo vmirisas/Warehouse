@@ -1,13 +1,15 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
-import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
+import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 
 import java.util.List;
 
 public interface WarehouseService {
-    public List<Warehouse> findAll();
-    public Warehouse findById (Long theId);
-    public void save(Warehouse theEmployee);
+    public List<WarehouseDTO> findAll();
+    public WarehouseDTO findById (Long theId);
+    public void save(WarehouseDTO theWarehouse);
     public void deleteById(Long theId);
+
+
 
 }
