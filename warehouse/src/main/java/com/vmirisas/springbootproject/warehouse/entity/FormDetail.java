@@ -20,7 +20,7 @@ public class FormDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long formDetailId;
 
     @Column(name = "transaction_form_id")
     private Long transactionFormId;
