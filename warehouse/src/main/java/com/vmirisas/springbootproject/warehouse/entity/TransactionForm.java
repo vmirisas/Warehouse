@@ -21,7 +21,7 @@ public class TransactionForm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "transaction_form_id")
     private Long transactionFormId;
 
     @Column(name = "type")

@@ -35,7 +35,7 @@ public class ProductRestController {
     public ProductDTO addProduct(@RequestBody ProductDTO theProduct) {
         // also just in case the pass an ID in JSON ... set id to null
 
-        theProduct.setId(0L);
+        theProduct.setProductId(0L);
 
         productService.save(theProduct);
 

@@ -13,7 +13,7 @@ import org.springframework.beans.BeanUtils;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class WarehouseDTO {
 
-    private long id;
+    private long warehouseId;
     private String warehouseCode;
     private String description;
 

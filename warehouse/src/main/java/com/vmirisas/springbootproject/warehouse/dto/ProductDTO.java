@@ -14,10 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductDTO {
 
-    private Long id;
+    private Long productId;
     private String barcode;
     private String description;
-    private int quantity;
+//    private int quantity;
     private List<Shelf> shelves;
 
     public ProductDTO(Product product) {

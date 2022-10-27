@@ -20,28 +20,28 @@ public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "stock_id")
     private Long stockId;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "shelf_code")
+    @JoinColumn(name = "shelf_code")
     private Shelf shelf;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "barcode")
+    @JoinColumn(name = "barcode")
     private Product product;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "id")
+    @JoinColumn(name = "id")
     private FormDetail formDetail;
 
     @Column(name = "quantity")

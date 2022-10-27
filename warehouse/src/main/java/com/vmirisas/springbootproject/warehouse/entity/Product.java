@@ -20,8 +20,8 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "barcode")
     private String barcode;
@@ -29,21 +29,30 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "quantity")
-    private int quantity;
+//    @Column(name = "quantity")
+//    private int quantity;
 
-
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH})
+    @JoinTable(
+            name = "stock",
+            joinColumns = @JoinColumn(name = "barcode"),
+            inverseJoinColumns = @JoinColumn (name = "shelf_code")
+    )
     private List<Shelf> shelves;
 
 
     public Product(ProductDTO dto) {
         BeanUtils.copyProperties(dto, this);
     }
-    public void update(ProductDTO productDTO) {
-        this.id = productDTO.getId();
-        this.barcode = productDTO.getBarcode();
-        this.description = productDTO.getDescription();
-        this.quantity = productDTO.getQuantity();
-        this.shelves = productDTO.getShelves();
-    }
+//    public void update(ProductDTO productDTO) {
+//        this.productId = productDTO.getId();
+//        this.barcode = productDTO.getBarcode();
+//        this.description = productDTO.getDescription();
+//        this.quantity = productDTO.getQuantity();
+//        this.shelves = productDTO.getShelves();
+//    }
 }

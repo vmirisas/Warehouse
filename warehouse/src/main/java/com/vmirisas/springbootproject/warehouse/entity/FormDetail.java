@@ -19,7 +19,7 @@ public class FormDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "form_detail_id")
     private Long formDetailId;
 
     @Column(name = "transaction_form_id")
@@ -32,7 +32,7 @@ public class FormDetail {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "barcode")
+    @JoinColumn(name = "barcode")
     private Product product;
 
     @Column(name = "quantity")
@@ -42,7 +42,7 @@ public class FormDetail {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "id")
+    @JoinColumn(name = "id")
     private TransactionForm transactionForm;
 
     public FormDetail(FormDetailDTO dto) {

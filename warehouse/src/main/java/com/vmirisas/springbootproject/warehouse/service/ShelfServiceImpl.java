@@ -23,7 +23,9 @@ public class ShelfServiceImpl implements ShelfService{
 
 
         for (Shelf shelf:shelvesList) {
-            shelvesDTOList.add(new ShelfDTO(shelf));
+            ShelfDTO shelfDTO = new ShelfDTO(shelf);
+            shelfDTO.setWarehouseId(shelf.getWarehouse().getWarehouseId());
+            shelvesDTOList.add(shelfDTO);
         }
 
         return shelvesDTOList;

@@ -20,21 +20,31 @@ public class Shelf {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "shelf_id")
+    private Long shelfId;
 
     @Column(name = "shelf_code")
     private String shelfCode;
 
-    @ManyToOne (fetch = FetchType.LAZY,
+    @ManyToOne (fetch = FetchType.EAGER,
                 cascade = {CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
                     CascadeType.REFRESH})
-    @Column(name = "warehouse_id")
+    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST,
+                    CascadeType.REFRESH})
+    @JoinTable(
+            name = "stock",
+            joinColumns = @JoinColumn(name = "shelf_code"),
+            inverseJoinColumns = @JoinColumn (name = "barcode")
+    )
     private List<Product> products;
 
     public Shelf(ShelfDTO dto) {

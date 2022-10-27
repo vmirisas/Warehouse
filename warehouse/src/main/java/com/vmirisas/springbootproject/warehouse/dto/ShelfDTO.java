@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class ShelfDTO {
-    private Long id;
+    private Long shelfId;
     private String shelfCode;
     private Long warehouseId;
     private List<Product> products;

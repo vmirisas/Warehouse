@@ -21,8 +21,8 @@ public class Warehouse {
     // define fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "warehouse_id")
+    private long warehouseId;
 
     @Column(name = "warehouse_code")
     private String warehouseCode;
@@ -44,7 +44,7 @@ public class Warehouse {
     @Override
     public String toString() {
         return "Warehouse{" +
-                "id=" + id +
+                "id=" + warehouseId +
                 ", warehouseCode='" + warehouseCode + '\'' +
                 ", description='" + description + '\'' +
                 '}';

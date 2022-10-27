@@ -35,7 +35,7 @@ public class ShelfRestController {
     public ShelfDTO addShelf(@RequestBody ShelfDTO theShelf) {
         // also just in case the pass an ID in JSON ... set id to null
 
-        theShelf.setId(0L);
+        theShelf.setShelfId(0L);
 
         shelfService.save(theShelf);
 

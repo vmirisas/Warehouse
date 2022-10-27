@@ -41,7 +41,7 @@ public class WarehouseRestController {
         // also just in case the pass an ID in JSON ... set id to null
 
 
-        theWarehouse.setId(0);
+        theWarehouse.setWarehouseId(0L);
 
         warehouseService.save(theWarehouse);
 
