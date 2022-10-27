@@ -22,6 +22,10 @@ public class FormDetailServiceImpl implements FormDetailService{
         List<FormDetailDTO> formDetailDTOList = new ArrayList<>();
 
         for (FormDetail detail: formDetailList) {
+
+            FormDetailDTO formDetailDTO = new FormDetailDTO(detail);
+            formDetailDTO.setTransactionFormId(detail.getTransactionForm().getTransactionFormId());
+
             formDetailDTOList.add(new FormDetailDTO(detail));
         }
 

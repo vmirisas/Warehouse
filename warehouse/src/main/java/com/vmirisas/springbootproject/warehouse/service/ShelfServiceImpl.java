@@ -21,10 +21,11 @@ public class ShelfServiceImpl implements ShelfService{
         List <Shelf> shelvesList = shelfRepository.findAll();
         List <ShelfDTO> shelvesDTOList = new ArrayList<>();
 
-
         for (Shelf shelf:shelvesList) {
+
             ShelfDTO shelfDTO = new ShelfDTO(shelf);
             shelfDTO.setWarehouseId(shelf.getWarehouse().getWarehouseId());
+
             shelvesDTOList.add(shelfDTO);
         }
 

@@ -22,8 +22,8 @@ public class FormDetail {
     @Column(name = "form_detail_id")
     private Long formDetailId;
 
-    @Column(name = "transaction_form_id")
-    private Long transactionFormId;
+//    @Column(name = "transaction_form_id")
+//    private Long transactionFormId;
 
     @Column(name = "shelfCode")
     private String shelfCode;
@@ -42,7 +42,7 @@ public class FormDetail {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "transaction_form_id")
     private TransactionForm transactionForm;
 
     public FormDetail(FormDetailDTO dto) {

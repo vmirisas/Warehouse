@@ -19,7 +19,7 @@ public class TransactionFormDTO {
     private String type;
     private Date date;
     private String description;
-    private List<FormDetail> formDetails;
+    private List<FormDetail> formDetailList;
 
     public TransactionFormDTO(TransactionForm transactionForm) {
         BeanUtils.copyProperties(transactionForm, this);

@@ -37,8 +37,8 @@ public class TransactionForm {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @Column(name = "id")
-    private List <FormDetail> formDetails;
+    @Column(name = "form_detail_id")
+    private List <FormDetail> formDetailList;
 
     public TransactionForm(TransactionFormDTO dto) {
         BeanUtils.copyProperties(dto, this);
