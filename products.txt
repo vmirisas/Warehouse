@@ -1,0 +1,15 @@
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('1', 'basketball_1', 'Spalding Basketball', '5');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('2', 'basketball_2', 'Nike Basketball', '3');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('3', 'football_1', 'Nike Football', '4');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('4', 'football_2', 'Adidas Football', '4');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('5', 'basketball_shoes_1', 'Adidas Harden 1', '2');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('6', 'basketball_shoes_2', 'Nike Freak 4', '6');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('7', 'toy_car_1', 'Mercedes toy car', '3');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('8', 'toy_car_2', 'Ferrari toy car', '7');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('9', 'tay_car_3', 'McLaren toy car', '3');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('10', 'percil_1', 'Faber Castell pencil HB', '15');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('11', 'percil_2', 'Faber Castell pencil 2B', '13');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('12', 'percil_2', 'Faber Castell pencil 3B', '12');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('13', 'eraser_1', 'Faber Castell eraser', '9');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('14', 'paper_1', 'A4 paper', '1500');
+INSERT INTO `warehouse_management`.`product` (`id`, `barcode`, `description`, `stock`) VALUES ('15', 'paper_2', 'A3 paper', '500');
