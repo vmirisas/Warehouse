@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class StockDTO {
 
-    private Long id;
+    private Long stockId;
     private Shelf shelf;
     private Product product;
     private FormDetail formDetail;

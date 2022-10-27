@@ -13,7 +13,7 @@ import org.springframework.beans.BeanUtils;
 @NoArgsConstructor
 public class FormDetailDTO {
 
-    private Long id;
+    private Long formDetailId;
     private Long transactionFormId;
     private String shelfCode;
     private Product product;

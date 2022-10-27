@@ -33,17 +33,17 @@ public class ProductServiceImpl implements ProductService{
     public ProductDTO findById(Long theId) {
         Optional<Product> result = productRepository.findById(theId);
 
-        ProductDTO theWarehouse ;
+        ProductDTO theProduct ;
 
         if (result.isPresent()) {
 
-            theWarehouse = new ProductDTO(result.get()) ;
+            theProduct = new ProductDTO(result.get()) ;
         } else {
             // we didn't find the warehouse
             throw new RuntimeException("Did not find warehouse id - " + theId);
         }
 
-        return theWarehouse;
+        return theProduct;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class TransactionFormRestController {
     public TransactionFormDTO addTransactionForm(@RequestBody TransactionFormDTO theTransactionForm) {
         // also just in case the pass an ID in JSON ... set id to null
 
-        theTransactionForm.setId(0L);
+        theTransactionForm.setTransactionFormId(0L);
 
         transactionFormService.save(theTransactionForm);
 

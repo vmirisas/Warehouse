@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TransactionFormDTO {
 
-    private Long id;
+    private Long transactionFormId;
     private String type;
     private Date date;
     private String description;

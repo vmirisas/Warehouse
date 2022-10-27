@@ -35,7 +35,7 @@ public class FormDetailRestController {
     public FormDetailDTO addFormDetail(@RequestBody FormDetailDTO theFormDetail) {
         // also just in case the pass an ID in JSON ... set id to null
 
-        theFormDetail.setId(0L);
+        theFormDetail.setFormDetailId(0L);
 
         formDetailService.save(theFormDetail);
 
