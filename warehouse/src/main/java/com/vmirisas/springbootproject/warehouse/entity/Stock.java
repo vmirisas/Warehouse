@@ -26,14 +26,21 @@ public class Stock {
             CascadeType.PERSIST,
             CascadeType.REFRESH})
     @Column(name = "shelf_code")
-    private String shelfCode;
+    private Shelf shelf;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
     @Column(name = "barcode")
-    private String barcode;;
+    private Product product;
+
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    @Column(name = "id")
+    private FormDetail formDetail;
 
     @Column(name = "quantity")
     private int quantity;

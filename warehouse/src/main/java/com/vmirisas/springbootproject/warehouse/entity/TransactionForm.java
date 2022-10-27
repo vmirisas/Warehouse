@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -29,4 +30,11 @@ public class TransactionForm {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    @Column(name = "id")
+    private List <FormDetail> formDetails;
 }

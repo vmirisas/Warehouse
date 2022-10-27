@@ -20,15 +20,26 @@ public class FormDetail {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "transaction_code_id")
+    @Column(name = "transaction_form_id")
     private Long transactionFormId;
 
     @Column(name = "shelfCode")
     private String shelfCode;
 
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
     @Column(name = "barcode")
-    private String barcode;
+    private Product product;
 
     @Column(name = "quantity")
     private int quantity;
+
+    @ManyToOne(cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    @Column(name = "id")
+    private TransactionForm transactionForm;
 }

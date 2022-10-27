@@ -32,7 +32,7 @@ public class Shelf {
                     CascadeType.PERSIST,
                     CascadeType.REFRESH})
     @Column(name = "warehouse_id")
-    private Long warehouseId;
+    private Warehouse warehouse;
 
 
     private List<Product> products;
