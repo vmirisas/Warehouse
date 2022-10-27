@@ -1,9 +1,11 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.vmirisas.springbootproject.warehouse.dto.TransactionFormDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -37,4 +39,8 @@ public class TransactionForm {
             CascadeType.REFRESH})
     @Column(name = "id")
     private List <FormDetail> formDetails;
+
+    public TransactionForm(TransactionFormDTO dto) {
+        BeanUtils.copyProperties(dto, this);
+    }
 }

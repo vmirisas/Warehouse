@@ -1,9 +1,11 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 
@@ -42,4 +44,8 @@ public class FormDetail {
             CascadeType.REFRESH})
     @Column(name = "id")
     private TransactionForm transactionForm;
+
+    public FormDetail(FormDetailDTO dto) {
+        BeanUtils.copyProperties(dto, this);
+    }
 }
