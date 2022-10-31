@@ -30,8 +30,8 @@ public class TransactionForm {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "details")
+    private String details;
 
     @OneToMany(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,

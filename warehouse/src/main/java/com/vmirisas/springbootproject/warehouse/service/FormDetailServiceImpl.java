@@ -2,6 +2,8 @@ package com.vmirisas.springbootproject.warehouse.service;
 
 import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
 import com.vmirisas.springbootproject.warehouse.entity.FormDetail;
+import com.vmirisas.springbootproject.warehouse.entity.Product;
+import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import com.vmirisas.springbootproject.warehouse.repository.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,11 @@ import java.util.Optional;
 @Service
 public class FormDetailServiceImpl implements FormDetailService{
 
+    @Autowired
+    ShelfService shelfService;
+
+    @Autowired
+    ProductService productService;
     @Autowired
     private FormDetailRepository formDetailRepository;
 
@@ -49,7 +56,17 @@ public class FormDetailServiceImpl implements FormDetailService{
 
     @Override
     public void save(FormDetailDTO theFormDetail) {
-        formDetailRepository.save(new FormDetail(theFormDetail));
+
+        FormDetail formDetail = new FormDetail(theFormDetail);
+
+        Product product = new Product(productService.findProductByBarcode(theFormDetail.getBarcode()));
+        formDetail.setProduct(product);
+
+        Shelf shelf = new Shelf(shelfService.findShelfByCode(theFormDetail.getShelfCode()));
+        formDetail.setShelf(shelf);
+
+        //formDetailRepository.save(new FormDetail(theFormDetail));
+        formDetailRepository.save(formDetail);
     }
 
     @Override

@@ -34,9 +34,9 @@ public class ShelfServiceImpl implements ShelfService{
 
     @Override
     public ShelfDTO findById(Long theId) {
-        Optional<Shelf> result =shelfRepository.findById(theId);
+        Optional<Shelf> result = shelfRepository.findById(theId);
 
-        ShelfDTO theShelf ;
+        ShelfDTO theShelf;
 
         if (result.isPresent()) {
 
@@ -57,6 +57,22 @@ public class ShelfServiceImpl implements ShelfService{
     @Override
     public void deleteById(Long theId) {
         shelfRepository.deleteById(theId);
+    }
+
+    public ShelfDTO findShelfByCode(String theCode) {
+        Optional<Shelf> result = Optional.ofNullable(shelfRepository.findShelfByCode(theCode));
+
+        ShelfDTO theShelf;
+
+        if (result.isPresent()) {
+
+            theShelf = new ShelfDTO(result.get()) ;
+        } else {
+            // we didn't find the shelf
+            throw new RuntimeException("Did not find shelf id - " + theCode);
+        }
+
+        return theShelf;
     }
 
 

@@ -25,13 +25,19 @@ public class FormDetail {
 //    @Column(name = "transaction_form_id")
 //    private Long transactionFormId;
 
-    @Column(name = "shelfCode")
-    private String shelfCode;
+    @ManyToOne(cascade = {CascadeType.DETACH,
+        CascadeType.MERGE,
+        CascadeType.PERSIST,
+        CascadeType.REFRESH})
+//    @Column(name = "shelfCode")
+    @JoinColumn(name = "shelf_code")
+    private Shelf shelf;
 
     @ManyToOne(cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
+//    @JoinColumn(name = "product_id")
     @JoinColumn(name = "barcode")
     private Product product;
 

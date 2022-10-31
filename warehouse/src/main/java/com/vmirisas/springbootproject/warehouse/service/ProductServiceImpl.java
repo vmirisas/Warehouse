@@ -46,6 +46,22 @@ public class ProductServiceImpl implements ProductService{
         return theProduct;
     }
 
+    public ProductDTO findProductByBarcode(String theBarcode) {
+        Optional<Product> result = Optional.ofNullable(productRepository.findProductByBarcode(theBarcode));
+
+        ProductDTO theProduct;
+
+        if (result.isPresent()) {
+
+            theProduct = new ProductDTO(result.get()) ;
+        } else {
+            // we didn't find the shelf
+            throw new RuntimeException("Did not find shelf id - " + theBarcode);
+        }
+
+        return theProduct;
+    }
+
     @Override
     public void save(ProductDTO theProduct) {
         productRepository.save(new Product(theProduct));
