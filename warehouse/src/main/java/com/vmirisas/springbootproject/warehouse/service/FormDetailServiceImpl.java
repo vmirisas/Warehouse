@@ -4,11 +4,13 @@ import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
 import com.vmirisas.springbootproject.warehouse.entity.FormDetail;
 import com.vmirisas.springbootproject.warehouse.entity.Product;
 import com.vmirisas.springbootproject.warehouse.entity.Shelf;
+import com.vmirisas.springbootproject.warehouse.entity.Stock;
 import com.vmirisas.springbootproject.warehouse.repository.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,8 @@ public class FormDetailServiceImpl implements FormDetailService{
     @Autowired
     ShelfService shelfService;
 
+    @Autowired
+    StockService stockService;
     @Autowired
     ProductService productService;
     @Autowired
@@ -65,7 +69,10 @@ public class FormDetailServiceImpl implements FormDetailService{
         Shelf shelf = new Shelf(shelfService.findShelfByCode(theFormDetail.getShelfCode()));
         formDetail.setShelf(shelf);
 
-        //formDetailRepository.save(new FormDetail(theFormDetail));
+        Stock stock = new Stock(0L, theFormDetail.getShelfCode(), theFormDetail.getBarcode(), formDetail.getQuantity(), new Date());
+        stockService.save(stock);
+
+//        formDetailRepository.save(new FormDetail(theFormDetail));
         formDetailRepository.save(formDetail);
     }
 

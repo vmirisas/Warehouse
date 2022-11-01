@@ -23,26 +23,13 @@ public class Stock {
     @Column(name = "stock_id")
     private Long stockId;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "shelf_code")
-    private Shelf shelf;
-
-    @ManyToOne(cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "barcode")
-    private Product product;
-
-    @ManyToOne(cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "id")
-    private FormDetail formDetail;
+//    @JoinColumn(name = "shelf_code")
+   @Column(name = "shelf_code")
+    private String shelf_code;
+//
+//    @JoinColumn(name = "barcode")
+    @Column(name = "barcode")
+    private String barcode;
 
     @Column(name = "quantity")
     private int quantity;

@@ -33,10 +33,11 @@ public class TransactionForm {
     @Column(name = "details")
     private String details;
 
-    @OneToMany(cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
+    @OneToMany (fetch = FetchType.LAZY,
+                cascade = {CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.PERSIST,
+                CascadeType.REFRESH})
     @Column(name = "form_detail_id")
     private List <FormDetail> formDetailList;
 

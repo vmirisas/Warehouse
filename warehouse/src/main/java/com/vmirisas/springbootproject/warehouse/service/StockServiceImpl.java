@@ -39,7 +39,7 @@ public class StockServiceImpl implements StockService{
 
             theStock = new StockDTO(result.get()) ;
         } else {
-            // we didn't find the warehouse
+            // we didn't find the stock
             throw new RuntimeException("Did not find stock id - " + theId);
         }
 
@@ -49,6 +49,11 @@ public class StockServiceImpl implements StockService{
     @Override
     public void save(StockDTO theStock) {
         stockRepository.save(new Stock(theStock));
+    }
+
+    @Override
+    public void save(Stock theStock){
+        stockRepository.save(theStock);
     }
 
     @Override

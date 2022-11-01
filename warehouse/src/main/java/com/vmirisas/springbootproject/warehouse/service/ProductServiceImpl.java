@@ -55,8 +55,8 @@ public class ProductServiceImpl implements ProductService{
 
             theProduct = new ProductDTO(result.get()) ;
         } else {
-            // we didn't find the shelf
-            throw new RuntimeException("Did not find shelf id - " + theBarcode);
+            // we didn't find the product
+            throw new RuntimeException("Did not find product id - " + theBarcode);
         }
 
         return theProduct;

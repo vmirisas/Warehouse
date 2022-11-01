@@ -25,7 +25,7 @@ public class FormDetail {
 //    @Column(name = "transaction_form_id")
 //    private Long transactionFormId;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
         CascadeType.MERGE,
         CascadeType.PERSIST,
         CascadeType.REFRESH})
@@ -33,7 +33,7 @@ public class FormDetail {
     @JoinColumn(name = "shelf_code")
     private Shelf shelf;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
@@ -44,7 +44,7 @@ public class FormDetail {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})

@@ -26,26 +26,42 @@ public class Shelf {
     @Column(name = "shelf_code")
     private String shelfCode;
 
-    @ManyToOne (fetch = FetchType.EAGER,
-                cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    @JoinColumn(name = "shelf_code")
+    private List<Stock> stocks;
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    @JoinColumn(name = "shelf_code")
+    private List<FormDetail> formDetailList;
+
+    @ManyToOne (fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH})
-    @JoinTable(
-            name = "stock",
-            joinColumns = @JoinColumn(name = "shelf_code"),
-            inverseJoinColumns = @JoinColumn (name = "barcode")
-    )
-    private List<Product> products;
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH,
+//            CascadeType.MERGE,
+//            CascadeType.PERSIST,
+//            CascadeType.REFRESH})
+//    @JoinTable(
+//            name = "stock",
+//            joinColumns = @JoinColumn(name = "shelf_code"),
+//            inverseJoinColumns = @JoinColumn (name = "barcode")
+//    )
+//    private List<Product> products;
 
     public Shelf(ShelfDTO dto) {
         BeanUtils.copyProperties(dto, this);
