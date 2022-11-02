@@ -1,10 +1,7 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
 import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
-import com.vmirisas.springbootproject.warehouse.entity.FormDetail;
-import com.vmirisas.springbootproject.warehouse.entity.Product;
-import com.vmirisas.springbootproject.warehouse.entity.Shelf;
-import com.vmirisas.springbootproject.warehouse.entity.Stock;
+import com.vmirisas.springbootproject.warehouse.entity.*;
 import com.vmirisas.springbootproject.warehouse.repository.FormDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,26 +15,36 @@ import java.util.Optional;
 public class FormDetailServiceImpl implements FormDetailService{
 
     @Autowired
-    ShelfService shelfService;
-
+    private ShelfService shelfService;
     @Autowired
-    StockService stockService;
+    private StockService stockService;
     @Autowired
-    ProductService productService;
+    private ProductService productService;
+    @Autowired
+    private TransactionFormService transactionFormService;
     @Autowired
     private FormDetailRepository formDetailRepository;
 
     @Override
     public List<FormDetailDTO> findAll() {
+
         List<FormDetail> formDetailList = formDetailRepository.findAll();
         List<FormDetailDTO> formDetailDTOList = new ArrayList<>();
 
         for (FormDetail detail: formDetailList) {
 
             FormDetailDTO formDetailDTO = new FormDetailDTO(detail);
-            formDetailDTO.setTransactionFormId(detail.getTransactionForm().getTransactionFormId());
 
-            formDetailDTOList.add(new FormDetailDTO(detail));
+            formDetailDTO.setFormDetailId(detail.getFormDetailId());
+            formDetailDTO.setTransactionFormId(detail.getTransactionForm().getTransactionFormId());
+            formDetailDTO.setShelfCode(detail.getShelf().getShelfCode());
+            formDetailDTO.setBarcode(detail.getProduct().getBarcode());
+            formDetailDTO.setQuantity(detail.getQuantity());
+
+//            formDetailDTO.setTransactionFormId(detail.getTransactionForm().getTransactionFormId());
+
+//            formDetailDTOList.add(new FormDetailDTO(detail));
+            formDetailDTOList.add(formDetailDTO);
         }
 
         return formDetailDTOList;
@@ -47,10 +54,18 @@ public class FormDetailServiceImpl implements FormDetailService{
     public FormDetailDTO findById(Long theId) {
        Optional<FormDetail> result = formDetailRepository.findById(theId);
 
-       FormDetailDTO theFormDetail;
+//       FormDetailDTO theFormDetail;
+        FormDetailDTO theFormDetail = new FormDetailDTO();
 
        if(result.isPresent()) {
-           theFormDetail = new FormDetailDTO(result.get());
+
+           theFormDetail.setFormDetailId(result.get().getFormDetailId());
+           theFormDetail.setTransactionFormId(result.get().getTransactionForm().getTransactionFormId());
+           theFormDetail.setShelfCode(result.get().getShelf().getShelfCode());
+           theFormDetail.setBarcode(result.get().getProduct().getBarcode());
+           theFormDetail.setQuantity(result.get().getQuantity());
+
+//           theFormDetail = new FormDetailDTO(result.get());
        } else {
            throw new RuntimeException("Did not find Form Detail id " + theId);
        }
@@ -69,10 +84,18 @@ public class FormDetailServiceImpl implements FormDetailService{
         Shelf shelf = new Shelf(shelfService.findShelfByCode(theFormDetail.getShelfCode()));
         formDetail.setShelf(shelf);
 
-        Stock stock = new Stock(0L, theFormDetail.getShelfCode(), theFormDetail.getBarcode(), formDetail.getQuantity(), new Date());
+        TransactionForm form =  new TransactionForm(transactionFormService.findById(theFormDetail.getTransactionFormId()));
+        formDetail.setTransactionForm(form);
+
+        Stock stock = new Stock();
+        stock.setStockId(0L);
+        stock.setShelf(shelf);
+        stock.setProduct(product);
+        stock.setDate(new Date());
+        stock.setQuantity(theFormDetail.getQuantity());
+
         stockService.save(stock);
 
-//        formDetailRepository.save(new FormDetail(theFormDetail));
         formDetailRepository.save(formDetail);
     }
 

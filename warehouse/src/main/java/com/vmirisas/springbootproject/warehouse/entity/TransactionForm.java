@@ -9,7 +9,6 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Setter
 @Getter
@@ -30,16 +29,9 @@ public class TransactionForm {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "details")
-    private String details;
+    @Column(name = "description")
+    private String description;
 
-    @OneToMany (fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH,
-                CascadeType.MERGE,
-                CascadeType.PERSIST,
-                CascadeType.REFRESH})
-    @Column(name = "form_detail_id")
-    private List <FormDetail> formDetailList;
 
     public TransactionForm(TransactionFormDTO dto) {
         BeanUtils.copyProperties(dto, this);

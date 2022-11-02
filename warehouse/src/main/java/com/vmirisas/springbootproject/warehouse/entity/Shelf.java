@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Setter
 @Getter
@@ -26,21 +25,21 @@ public class Shelf {
     @Column(name = "shelf_code")
     private String shelfCode;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "shelf_code")
-    private List<Stock> stocks;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "shelf_code")
-    private List<FormDetail> formDetailList;
+//    @OneToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH,
+//            CascadeType.MERGE,
+//            CascadeType.PERSIST,
+//            CascadeType.REFRESH})
+//    @JoinColumn(name = "shelf_code")
+//    private List<Stock> stocks;
+//
+//    @OneToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH,
+//            CascadeType.MERGE,
+//            CascadeType.PERSIST,
+//            CascadeType.REFRESH})
+//    @JoinColumn(name = "shelf_code")
+//    private List<FormDetail> formDetailList;
 
     @ManyToOne (fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,

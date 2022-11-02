@@ -1,13 +1,10 @@
 package com.vmirisas.springbootproject.warehouse.dto;
 
 import com.vmirisas.springbootproject.warehouse.entity.Product;
-import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -18,7 +15,7 @@ public class ProductDTO {
     private String barcode;
     private String description;
 //    private int quantity;
-    private List<Shelf> shelves;
+//    private List<Shelf> shelves;
 
     public ProductDTO(Product product) {
         BeanUtils.copyProperties(product, this);

@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Setter
 @Getter
@@ -26,21 +25,21 @@ public class Product {
     @Column(name = "barcode")
     private String barcode;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH})
-    @JoinColumn(name = "barcode")
-    private List<Stock> stocks;
+//    @OneToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.PERSIST,
+//                    CascadeType.REFRESH})
+//    @JoinColumn(name = "barcode")
+//    private List<Stock> stocks;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH})
-    @JoinColumn(name = "barcode")
-    private List<FormDetail> formDetailList;
+//    @OneToMany(fetch = FetchType.LAZY,
+//            cascade = {CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.PERSIST,
+//                    CascadeType.REFRESH})
+//    @JoinColumn(name = "barcode")
+//    private List<FormDetail> formDetailList;
 
     @Column(name = "description")
     private String description;

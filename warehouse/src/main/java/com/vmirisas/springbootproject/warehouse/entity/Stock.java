@@ -24,12 +24,26 @@ public class Stock {
     private Long stockId;
 
 //    @JoinColumn(name = "shelf_code")
-   @Column(name = "shelf_code")
-    private String shelf_code;
+@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+        CascadeType.MERGE,
+        CascadeType.PERSIST,
+        CascadeType.REFRESH})
+//    @Column(name = "shelfCode")
+@JoinColumn(name = "shelf_id")
+   //@Column(name = "shelf_code")
+    private Shelf shelf;
+//    private String shelf_code;
 //
 //    @JoinColumn(name = "barcode")
-    @Column(name = "barcode")
-    private String barcode;
+//    @Column(name = "barcode")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+//    @Column(name = "shelfCode")
+    @JoinColumn(name = "product_id")
+    private Product product;
+//    private String barcode;
 
     @Column(name = "quantity")
     private int quantity;

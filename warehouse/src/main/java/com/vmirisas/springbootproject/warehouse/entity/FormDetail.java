@@ -22,34 +22,29 @@ public class FormDetail {
     @Column(name = "form_detail_id")
     private Long formDetailId;
 
-//    @Column(name = "transaction_form_id")
-//    private Long transactionFormId;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
-        CascadeType.MERGE,
-        CascadeType.PERSIST,
-        CascadeType.REFRESH})
-//    @Column(name = "shelfCode")
-    @JoinColumn(name = "shelf_code")
-    private Shelf shelf;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
-//    @JoinColumn(name = "product_id")
-    @JoinColumn(name = "barcode")
-    private Product product;
-
-    @Column(name = "quantity")
-    private int quantity;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
     @JoinColumn(name = "transaction_form_id")
     private TransactionForm transactionForm;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+        CascadeType.MERGE,
+        CascadeType.PERSIST,
+        CascadeType.REFRESH})
+    @JoinColumn(name = "shelf_id")
+    private Shelf shelf;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH})
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(name = "quantity")
+    private int quantity;
+
 
     public FormDetail(FormDetailDTO dto) {
         BeanUtils.copyProperties(dto, this);
