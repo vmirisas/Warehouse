@@ -1,7 +1,10 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
+import com.vmirisas.springbootproject.warehouse.dto.ShelfDTO;
 import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
+import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
+import com.vmirisas.springbootproject.warehouse.repository.ShelfRepository;
 import com.vmirisas.springbootproject.warehouse.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +15,11 @@ import java.util.Optional;
 
 @Service
 public class WarehouseServiceImpl implements WarehouseService{
-@Autowired
+    @Autowired
     private WarehouseRepository warehouseRepository;
+
+    @Autowired
+    private ShelfRepository shelfRepository;
 
 
     @Override
@@ -24,7 +30,25 @@ public class WarehouseServiceImpl implements WarehouseService{
 
 
         for (Warehouse warehouse:warehouseList) {
-            warehouseDTOList.add(new WarehouseDTO(warehouse));
+
+            WarehouseDTO warehouseDTO = new WarehouseDTO(warehouse);
+
+            warehouseDTO.setWarehouseId(warehouse.getWarehouseId());
+            warehouseDTO.setWarehouseCode(warehouse.getWarehouseCode());
+            warehouseDTO.setDescription(warehouse.getDescription());
+
+            List <Shelf> shelvesList = warehouse.getShelves();
+            List <ShelfDTO> shelvesDTOList = new ArrayList<>();
+
+            for (Shelf shelf:shelvesList) {
+
+                ShelfDTO shelfDTO = new ShelfDTO(shelf);
+                shelfDTO.setWarehouseId(warehouse.getWarehouseId());
+                shelvesDTOList.add(shelfDTO);
+            }
+
+            warehouseDTO.setShelves(shelvesDTOList);
+            warehouseDTOList.add(warehouseDTO);
         }
 
         return warehouseDTOList;

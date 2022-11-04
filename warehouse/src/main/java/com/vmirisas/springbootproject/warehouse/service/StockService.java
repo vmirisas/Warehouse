@@ -10,8 +10,8 @@ public interface StockService {
     List<StockDTO> findAll();
     StockDTO findById (Long theId);
     void save(StockDTO theStock);
-
     void save(Stock theStock);
-
     void deleteById(Long theId);
+    int getStockToExport(String barcode, String shelfCode);
+    StockDTO getStockExistence(String barcode, String shelfCode);
 }

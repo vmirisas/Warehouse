@@ -25,6 +25,9 @@ public class FormDetailServiceImpl implements FormDetailService{
     @Autowired
     private FormDetailRepository formDetailRepository;
 
+//    @Autowired
+//    private ProductRepository productRepository;
+
     @Override
     public List<FormDetailDTO> findAll() {
 
@@ -87,20 +90,79 @@ public class FormDetailServiceImpl implements FormDetailService{
         TransactionForm form =  new TransactionForm(transactionFormService.findById(theFormDetail.getTransactionFormId()));
         formDetail.setTransactionForm(form);
 
-        Stock stock = new Stock();
-        stock.setStockId(0L);
-        stock.setShelf(shelf);
-        stock.setProduct(product);
-        stock.setDate(new Date());
-        stock.setQuantity(theFormDetail.getQuantity());
+        String transactionType = formDetail.getTransactionForm().getType();
 
-        stockService.save(stock);
+        if(transactionType.equalsIgnoreCase("import")) {
 
-        formDetailRepository.save(formDetail);
+            Stock stock = new Stock(stockService.getStockExistence(product.getBarcode(), shelf.getShelfCode()));
+
+
+            if (stock.getStockId() != null ) {
+
+                int stockQuantity = stock.getQuantity();
+                int importedQuantity = theFormDetail.getQuantity();
+
+                stock.setStockId(1L);
+                stock.setShelf(shelf);
+                stock.setProduct(product);
+                stock.setDate(new Date());
+                stock.setQuantity(stockQuantity + importedQuantity);
+
+            } else {
+
+                stock.setStockId(0L);
+                stock.setShelf(shelf);
+                stock.setProduct(product);
+                stock.setDate(new Date());
+                stock.setQuantity(theFormDetail.getQuantity());
+            }
+
+            stockService.save(stock);
+
+            formDetailRepository.save(formDetail);
+
+        } else if (transactionType.equalsIgnoreCase("export")) {
+
+//            Stock stock = new Stock(stockService.getStockExistence(product.getBarcode(), shelf.getShelfCode()));
+//            int currentQuantity = stock.getQuantity();
+
+            int currentQuantity = stockService.getStockToExport(product.getBarcode(), shelf.getShelfCode());
+            int exportedQuantity = formDetail.getQuantity();
+
+            if (exportedQuantity > currentQuantity) {
+                throw new RuntimeException("The exported quantity is greater than the current stock");
+            }
+
+            Stock stock = new Stock();
+            stock.setStockId(0L);
+            stock.setShelf(shelf);
+            stock.setProduct(product);
+            stock.setDate(new Date());
+            stock.setQuantity(currentQuantity - exportedQuantity);
+
+            stockService.save(stock);
+
+        } else {
+
+            throw new RuntimeException("Did not find transaction type - " + transactionType);
+
+        }
+
+//        Stock stock = new Stock();
+//        stock.setStockId(0L);
+//        stock.setShelf(shelf);
+//        stock.setProduct(product);
+//        stock.setDate(new Date());
+//        stock.setQuantity(theFormDetail.getQuantity());
+//
+//        stockService.save(stock);
+//
+//        formDetailRepository.save(formDetail);
     }
 
     @Override
     public void deleteById(Long theId) {
         formDetailRepository.deleteById(theId);
     }
+
 }

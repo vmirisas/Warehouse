@@ -1,5 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,21 +23,25 @@ public class FormDetail {
     @Column(name = "form_detail_id")
     private Long formDetailId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
     @JoinColumn(name = "transaction_form_id")
     private TransactionForm transactionForm;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
         CascadeType.MERGE,
         CascadeType.PERSIST,
         CascadeType.REFRESH})
     @JoinColumn(name = "shelf_id")
     private Shelf shelf;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH})
     @JoinColumn(name = "product_id")

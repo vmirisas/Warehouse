@@ -1,5 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vmirisas.springbootproject.warehouse.dto.TransactionFormDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Setter
 @Getter
@@ -31,6 +33,15 @@ public class TransactionForm {
 
     @Column(name = "description")
     private String description;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "transactionForm",
+            cascade = {CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH})
+    private List<FormDetail> formDetailList;
 
 
     public TransactionForm(TransactionFormDTO dto) {

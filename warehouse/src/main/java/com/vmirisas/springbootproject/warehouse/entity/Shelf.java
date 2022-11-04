@@ -1,5 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vmirisas.springbootproject.warehouse.dto.ShelfDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class Shelf {
 //    @JoinColumn(name = "shelf_code")
 //    private List<FormDetail> formDetailList;
 
+    @JsonManagedReference
     @ManyToOne (fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,
             CascadeType.MERGE,

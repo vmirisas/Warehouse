@@ -16,7 +16,7 @@ public class FormDetailDTO {
     private String shelfCode;
     private String barcode;
     private int quantity;
-//    private TransactionForm transactionForm;
+
 
     public FormDetailDTO(FormDetail formDetail) {
         BeanUtils.copyProperties(formDetail, this);

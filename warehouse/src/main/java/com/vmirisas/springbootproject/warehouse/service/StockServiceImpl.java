@@ -60,4 +60,34 @@ public class StockServiceImpl implements StockService{
     public void deleteById(Long theId) {
         stockRepository.deleteById(theId);
     }
+
+    public StockDTO getStockExistence(String barcode, String shelfCode) {
+        Optional<Stock> result = Optional.ofNullable(stockRepository.getStockExistence(barcode, shelfCode));
+
+        StockDTO theStock;
+
+        if (result.isPresent()) {
+            theStock = new StockDTO(result.get());
+        }
+        else {
+            throw new RuntimeException("The stock with barcode: " + barcode + " and shelf code: " + shelfCode + " doesn't exist.");
+        }
+
+        return theStock;
+    }
+
+    public int getStockToExport(String barcode, String shelfCode) {
+        Optional<Integer> result = Optional.ofNullable(stockRepository.getStockToExport(barcode, shelfCode));
+
+        Integer quantity;
+
+        if (result.isPresent()) {
+            quantity = result.get();
+        } else {
+            throw new RuntimeException("Did not find the stock with barcode: " + barcode + " and shelf code: " + shelfCode + " for export.");
+        }
+
+        return quantity;
+    }
+
 }

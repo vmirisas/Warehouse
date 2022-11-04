@@ -1,5 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,12 +31,13 @@ public class Warehouse {
     @Column(name = "description")
     private String description;
 
-    @OneToMany (fetch = FetchType.LAZY,
-                cascade = {CascadeType.DETACH,
+    @JsonBackReference
+    @OneToMany (    fetch = FetchType.LAZY,
+                    mappedBy = "warehouse",
+                    cascade = {CascadeType.DETACH,
                     CascadeType.MERGE,
                     CascadeType.PERSIST,
                     CascadeType.REFRESH})
-    @JoinColumn(name = "warehouse_id")
     private List<Shelf> shelves;
 
     // define constructors
