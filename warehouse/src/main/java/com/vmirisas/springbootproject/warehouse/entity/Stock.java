@@ -23,33 +23,28 @@ public class Stock {
     @Column(name = "stock_id")
     private Long stockId;
 
-//    @JoinColumn(name = "shelf_code")
-@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+    @ManyToOne(fetch = FetchType.EAGER,
+        cascade = {CascadeType.DETACH,
         CascadeType.MERGE,
         CascadeType.PERSIST,
         CascadeType.REFRESH})
-//    @Column(name = "shelfCode")
-@JoinColumn(name = "shelf_id")
-   //@Column(name = "shelf_code")
+    @JoinColumn(name = "shelf_id")
     private Shelf shelf;
-//    private String shelf_code;
-//
-//    @JoinColumn(name = "barcode")
-//    @Column(name = "barcode")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,
+
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-//    @Column(name = "shelfCode")
     @JoinColumn(name = "product_id")
     private Product product;
-//    private String barcode;
 
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "date")
     private Date date;
+
     public Stock(StockDTO dto) {
         BeanUtils.copyProperties(dto, this);
     }

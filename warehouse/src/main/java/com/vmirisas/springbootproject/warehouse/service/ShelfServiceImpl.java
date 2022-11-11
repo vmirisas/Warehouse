@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ShelfServiceImpl implements ShelfService{
@@ -16,42 +15,51 @@ public class ShelfServiceImpl implements ShelfService{
     @Autowired
     private ShelfRepository shelfRepository;
 
+//    @Autowired private WarehouseService warehouseService;
+
     @Override
-    public List<ShelfDTO> findAll() {
-        List <Shelf> shelvesList = shelfRepository.findAll();
-        List <ShelfDTO> shelvesDTOList = new ArrayList<>();
-
-        for (Shelf shelf:shelvesList) {
-
-            ShelfDTO shelfDTO = new ShelfDTO(shelf);
-            shelfDTO.setWarehouseId(shelf.getWarehouse().getWarehouseId());
-
-            shelvesDTOList.add(shelfDTO);
-        }
-
-        return shelvesDTOList;
+    public List<Shelf> findAll() {
+        return shelfRepository.findAll();
+//        List <Shelf> shelvesList = shelfRepository.findAll();
+//        List <ShelfDTO> shelvesDTOList = new ArrayList<>();
+//
+//        for (Shelf shelf:shelvesList) {
+//
+//            ShelfDTO shelfDTO = new ShelfDTO(shelf);
+//
+//            shelvesDTOList.add(shelfDTO);
+//        }
+//
+//        return shelvesDTOList;
     }
 
     @Override
-    public ShelfDTO findById(Long theId) {
-        Optional<Shelf> result = shelfRepository.findById(theId);
-
-        ShelfDTO theShelf;
-
-        if (result.isPresent()) {
-
-            theShelf = new ShelfDTO(result.get()) ;
-        } else {
-            // we didn't find the shelf
-            throw new RuntimeException("Did not find shelf id - " + theId);
-        }
-
-        return theShelf;
+    public Shelf findById(Long theId) {
+        return this.shelfRepository.findById(theId).orElseThrow(() -> new RuntimeException("Shelf with id '" + theId + "' not found"));
+//        Optional<Shelf> result = shelfRepository.findById(theId);
+//
+//        ShelfDTO shelfDTO;
+//
+//        if (result.isPresent()) {
+//
+//            shelfDTO = new ShelfDTO(result.get()) ;
+//
+//        } else {
+//            // we didn't find the shelf
+//            throw new RuntimeException("Did not find shelf id - " + theId);
+//        }
+//
+//        return shelfDTO;
     }
 
     @Override
-    public void save(ShelfDTO theShelf) {
-        shelfRepository.save(new Shelf(theShelf));
+    public Shelf save(ShelfDTO theShelf) {
+        return shelfRepository.save(new Shelf(theShelf));
+    }
+
+    @Override
+    public Shelf findShelfByCode(String theCode) {
+        return this.shelfRepository.findByShelfCode(theCode).orElseThrow(() -> new RuntimeException("Shelf with code '" + theCode + "' not found"));
     }
 
     @Override
@@ -59,21 +67,37 @@ public class ShelfServiceImpl implements ShelfService{
         shelfRepository.deleteById(theId);
     }
 
-    public ShelfDTO findShelfByCode(String theCode) {
-        Optional<Shelf> result = Optional.ofNullable(shelfRepository.findShelfByCode(theCode));
+//    public Shelf findByShelfCode(String theCode) {
+//        Optional<Shelf> result = Optional.ofNullable(shelfRepository.findShelfByCode(theCode));
+//
+//        ShelfDTO theShelf;
+//
+//        if (result.isPresent()) {
+//
+//            theShelf = new ShelfDTO(result.get()) ;
+//        } else {
+//            // we didn't find the shelf
+//            throw new RuntimeException("Did not find shelf id - " + theCode);
+//        }
+//
+//        return theShelf;
+//    }
 
-        ShelfDTO theShelf;
+    @Override
+    public Shelf toEntity(ShelfDTO shelfDTO) {
+        Shelf shelf = new Shelf(shelfDTO);
 
-        if (result.isPresent()) {
-
-            theShelf = new ShelfDTO(result.get()) ;
-        } else {
-            // we didn't find the shelf
-            throw new RuntimeException("Did not find shelf id - " + theCode);
-        }
-
-        return theShelf;
+//        Warehouse warehouse = this.warehouseService.findById(shelfDTO.getWarehouseId());
+//        shelf.setWarehouse(warehouse);
+        return shelf;
     }
 
-
+    @Override
+    public List<ShelfDTO> toDtoList(List<Shelf> shelves) {
+        List<ShelfDTO> list = new ArrayList<>();
+        for (Shelf s : shelves){
+            list.add(new ShelfDTO(s));
+        }
+        return list;
+    }
 }

@@ -8,61 +8,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/shelf")
 public class ShelfRestController {
 
     @Autowired
     private ShelfService shelfService;
 
-    @GetMapping("/shelf")
+    @GetMapping("")
     public List<ShelfDTO> findAll() {
-        return shelfService.findAll();
+        return this.shelfService.toDtoList(this.shelfService.findAll());
     }
 
-    @GetMapping("/shelf/{shelfId}")
+    @GetMapping("/{shelfId}")
     public ShelfDTO getShelf(@PathVariable Long shelfId) {
-
-        ShelfDTO theShelf = shelfService.findById(shelfId);
-
-        if(theShelf == null) {
-            throw new RuntimeException("Shelf id not found - " + shelfId);
-        }
-
-        return theShelf;
+        return new ShelfDTO(this.shelfService.findById(shelfId));
     }
 
-    @PostMapping("/shelf")
+    @PostMapping("")
     public ShelfDTO addShelf(@RequestBody ShelfDTO theShelf) {
-        // also just in case the pass an ID in JSON ... set id to null
-
-        theShelf.setShelfId(0L);
-
-        shelfService.save(theShelf);
-
-        return theShelf;
-
+        theShelf.setShelfId(null);
+        return new ShelfDTO(this.shelfService.save(theShelf));
     }
 
-    @PutMapping("/shelf")
+    @PutMapping("")
     public ShelfDTO updateShelf(@RequestBody ShelfDTO theShelf) {
-
-        shelfService.save(theShelf);
-
-        return theShelf;
+        return new ShelfDTO(this.shelfService.save(theShelf));
     }
 
-    @DeleteMapping("/shelf/{shelfId}")
+    @DeleteMapping("/{shelfId}")
     public String deleteShelf(@PathVariable Long shelfId) {
-
-        ShelfDTO tempShelf = shelfService.findById(shelfId);
-
-        if (tempShelf == null) {
-
-            throw new RuntimeException("Shelf id not found - " + shelfId);
-        }
-
         shelfService.deleteById(shelfId);
-
-        return "Deleted shelf id - " + shelfId;
+        return "Deleted shelf with id - " + shelfId;
     }
 }

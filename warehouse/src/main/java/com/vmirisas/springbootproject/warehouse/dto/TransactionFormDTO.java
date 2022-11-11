@@ -1,6 +1,7 @@
 package com.vmirisas.springbootproject.warehouse.dto;
 
 import com.vmirisas.springbootproject.warehouse.entity.TransactionForm;
+import com.vmirisas.springbootproject.warehouse.entity.enums.FormType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.List;
 public class TransactionFormDTO {
 
     private Long transactionFormId;
-    private String type;
+    private FormType type;
     private Date date;
     private String description;
     private List<FormDetailDTO> formDetailList;

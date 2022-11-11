@@ -3,7 +3,7 @@ package com.vmirisas.springbootproject.warehouse.repository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ShelfRepositoryCustom {
+public interface TransactionFormRepositoryCustom {
+    Long getLastTransactionFormId();
 
-//    Shelf findShelfByCode(String shelfCode);
 }

@@ -1,6 +1,5 @@
 package com.vmirisas.springbootproject.warehouse.dto;
 
-import com.vmirisas.springbootproject.warehouse.entity.FormDetail;
 import com.vmirisas.springbootproject.warehouse.entity.Product;
 import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import com.vmirisas.springbootproject.warehouse.entity.Stock;
@@ -17,13 +16,27 @@ import java.util.Date;
 public class StockDTO {
 
     private Long stockId;
-    private Shelf shelf;
-    private Product product;
-    private FormDetail formDetail;
+
+    private Long productId;
+    private String productBarcode;
+
+    private Long shelfId;
+    private String shelfCode;
+
     private int quantity;
     private Date date;
 
     public StockDTO(Stock stock) {
         BeanUtils.copyProperties(stock, this);
+
+        Product product = stock.getProduct();
+        this.productId = product.getProductId();
+        this.productBarcode = product.getBarcode();
+
+        Shelf shelf = stock.getShelf();
+        this.shelfId = shelf.getShelfId();
+        this.shelfCode = shelf.getShelfCode();
+
+
     }
 }

@@ -1,7 +1,7 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.vmirisas.springbootproject.warehouse.dto.TransactionFormDTO;
+import com.vmirisas.springbootproject.warehouse.entity.enums.FormType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +25,9 @@ public class TransactionForm {
     @Column(name = "transaction_form_id")
     private Long transactionFormId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private String type;
+    private FormType type;
 
     @Column(name = "date")
     private Date date;
@@ -34,7 +35,7 @@ public class TransactionForm {
     @Column(name = "description")
     private String description;
 
-    @JsonBackReference
+//    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "transactionForm",
             cascade = {CascadeType.DETACH,

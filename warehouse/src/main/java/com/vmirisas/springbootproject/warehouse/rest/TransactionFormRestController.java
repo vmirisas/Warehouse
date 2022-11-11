@@ -8,60 +8,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/form")
 public class TransactionFormRestController {
 
     @Autowired
     private TransactionFormService transactionFormService;
 
-    @GetMapping("/transactionForm")
+    @GetMapping("")
     public List<TransactionFormDTO> findAll() {
-        return transactionFormService.findAll();
+        return this.transactionFormService.toDtoList(this.transactionFormService.findAll());
     }
 
-    @GetMapping("/transactionForm/{transactionFormId}")
+    @GetMapping("/{transactionFormId}")
     public TransactionFormDTO getTransactionForm(@PathVariable Long transactionFormId) {
-
-        TransactionFormDTO theTransactionForm = transactionFormService.findById(transactionFormId);
-
-        if(theTransactionForm == null) {
-            throw new RuntimeException("Transaction Form id not found - " + transactionFormId);
-        }
-
-        return theTransactionForm;
+        return new TransactionFormDTO(this.transactionFormService.findById(transactionFormId));
     }
 
-    @PostMapping("/transactionForm")
+    @PostMapping("")
     public TransactionFormDTO addTransactionForm(@RequestBody TransactionFormDTO theTransactionForm) {
         // also just in case the pass an ID in JSON ... set id to null
-
-        theTransactionForm.setTransactionFormId(0L);
-
-        transactionFormService.save(theTransactionForm);
-
-        return theTransactionForm;
+        theTransactionForm.setTransactionFormId(null);
+        return new TransactionFormDTO(this.transactionFormService.save(theTransactionForm));
     }
 
-    @PutMapping("/transactionForm")
+    @PutMapping("")
     public TransactionFormDTO updateTransactionForm(@RequestBody TransactionFormDTO theTransactionForm) {
-
-        transactionFormService.save(theTransactionForm);
-
-        return theTransactionForm;
+        return new TransactionFormDTO(this.transactionFormService.save(theTransactionForm));
     }
 
-    @DeleteMapping("/transactionForm/{transactionFormId}")
+    @DeleteMapping("/{transactionFormId}")
     public String deleteTransactionForm(@PathVariable Long transactionFormId) {
-
-        TransactionFormDTO tempTransactionForm = transactionFormService.findById(transactionFormId);
-
-        if (tempTransactionForm == null) {
-
-            throw new RuntimeException("Transaction Form id not found - " + transactionFormId);
-        }
-
         transactionFormService.deleteById(transactionFormId);
-
-        return "Deleted Transaction Form id - " + transactionFormId;
+        return "Deleted Transaction Form with id  '" + transactionFormId + "'";
     }
 }

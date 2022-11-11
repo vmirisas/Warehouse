@@ -1,26 +1,31 @@
 package com.vmirisas.springbootproject.warehouse.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
 @Getter
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WarehouseDTO {
 
-    private long warehouseId;
+    private Long warehouseId;
     private String warehouseCode;
     private String description;
-    private List<ShelfDTO> shelves;
+    private List<ShelfDTO> shelves = new ArrayList<>();
 
     public WarehouseDTO(Warehouse warehouse) {
-        BeanUtils.copyProperties(warehouse, this);
+        BeanUtils.copyProperties(warehouse, this, "shelves");
+
+        for (Shelf s : warehouse.getShelves()) {
+            this.shelves.add(new ShelfDTO(s));
+        }
     }
+
 }

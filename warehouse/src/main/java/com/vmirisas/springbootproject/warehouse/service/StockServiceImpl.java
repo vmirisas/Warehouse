@@ -1,12 +1,14 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
 import com.vmirisas.springbootproject.warehouse.dto.StockDTO;
+import com.vmirisas.springbootproject.warehouse.dto.search.StockSearch;
 import com.vmirisas.springbootproject.warehouse.entity.Stock;
 import com.vmirisas.springbootproject.warehouse.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,51 +19,37 @@ public class StockServiceImpl implements StockService{
     private StockRepository stockRepository;
 
     @Override
-    public List<StockDTO> findAll() {
-        List <Stock> stockList = stockRepository.findAll();
-        List <StockDTO> stockDTOList = new ArrayList<>();
-
-
-        for (Stock stock:stockList) {
-            stockDTOList.add(new StockDTO(stock));
-        }
-
-        return stockDTOList;
+    public List<Stock> findAll() {
+        return stockRepository.findAll();
     }
 
     @Override
-    public StockDTO findById(Long theId) {
-        Optional<Stock> result = stockRepository.findById(theId);
-
-        StockDTO theStock ;
-
-        if (result.isPresent()) {
-
-            theStock = new StockDTO(result.get()) ;
-        } else {
-            // we didn't find the stock
-            throw new RuntimeException("Did not find stock id - " + theId);
-        }
-
-        return theStock;
+    public Stock findById(Long theId) {
+        return this.stockRepository.findById(theId).orElseThrow(() -> new RuntimeException("Stock with id '" + theId + "' not found"));
     }
 
     @Override
-    public void save(StockDTO theStock) {
-        stockRepository.save(new Stock(theStock));
+    public Stock save(StockDTO theStock) {
+        return stockRepository.save(new Stock(theStock));
     }
 
     @Override
-    public void save(Stock theStock){
-        stockRepository.save(theStock);
+    public Stock save(Stock theStock){
+        return stockRepository.save(theStock);
     }
 
     @Override
     public void deleteById(Long theId) {
-        stockRepository.deleteById(theId);
+        Stock stock = this.stockRepository.findById(theId).orElseThrow(() -> new RuntimeException("Product with id '" + theId + "' not found"));
+        stockRepository.delete(stock);
     }
 
-    public StockDTO getStockExistence(String barcode, String shelfCode) {
+    @Override
+    public List<StockDTO> search(StockSearch search) {
+        return stockRepository.search(search);
+    }
+
+    public StockDTO getStockToImport(String barcode, String shelfCode) {
         Optional<Stock> result = Optional.ofNullable(stockRepository.getStockExistence(barcode, shelfCode));
 
         StockDTO theStock;
@@ -70,7 +58,8 @@ public class StockServiceImpl implements StockService{
             theStock = new StockDTO(result.get());
         }
         else {
-            throw new RuntimeException("The stock with barcode: " + barcode + " and shelf code: " + shelfCode + " doesn't exist.");
+            theStock = new StockDTO();
+//            throw new RuntimeException("The stock with barcode: " + barcode + " and shelf code: " + shelfCode + " doesn't exist.");
         }
 
         return theStock;
@@ -90,4 +79,26 @@ public class StockServiceImpl implements StockService{
         return quantity;
     }
 
+    public StockDTO getStockFromBarcodeAndDate(String barcode, Date date) {
+        Optional<Stock> result = Optional.ofNullable(stockRepository.getStockFromBarcodeAndDate(barcode, date));
+
+        StockDTO stockDTO;
+
+        if (result.isPresent()) {
+            stockDTO = new StockDTO(result.get());
+        } else {
+            throw new RuntimeException("Did not find stock of the product with barcode: " + barcode + " until the date " + date);
+        }
+
+        return stockDTO;
+    }
+
+    @Override
+    public List<StockDTO> toDtoList(List<Stock> stockList) {
+        List<StockDTO> list = new ArrayList<>();
+        for (Stock s : stockList) {
+            list.add(new StockDTO(s));
+        }
+        return list;
+    }
 }

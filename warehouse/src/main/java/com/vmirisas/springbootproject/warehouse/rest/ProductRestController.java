@@ -8,60 +8,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/product")
 public class ProductRestController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/product")
+    @GetMapping("")
     public List<ProductDTO> findAll() {
-        return productService.findAll();
+        return this.productService.toDtoList(this.productService.findAll());
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/{productId}")
     public ProductDTO getProduct(@PathVariable Long productId) {
-
-        ProductDTO theProduct = productService.findById(productId);
-
-        if(theProduct == null) {
-            throw new RuntimeException("Product id not found - " + productId);
-        }
-
-        return theProduct;
+        return new ProductDTO(this.productService.findById(productId));
     }
 
-    @PostMapping("/product")
+    @PostMapping("")
     public ProductDTO addProduct(@RequestBody ProductDTO theProduct) {
-        // also just in case the pass an ID in JSON ... set id to null
-
-        theProduct.setProductId(0L);
-
-        productService.save(theProduct);
-
-        return theProduct;
+        theProduct.setProductId(null);
+        return new ProductDTO(this.productService.save(theProduct));
     }
 
-    @PutMapping("/product")
+    @PutMapping("")
     public ProductDTO updateProduct(@RequestBody ProductDTO theProduct) {
-
-        productService.save(theProduct);
-
-        return theProduct;
+        return new ProductDTO(this.productService.save(theProduct));
     }
 
-    @DeleteMapping("/product/{productId}")
+    @DeleteMapping("/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
-
-        ProductDTO tempProduct = productService.findById(productId);
-
-        if (tempProduct == null) {
-
-            throw new RuntimeException("Product id not found - " + productId);
-        }
-
         productService.deleteById(productId);
-
-        return "Deleted product id - " + productId;
+        return "Deleted product with id '" + productId + "'";
     }
 }

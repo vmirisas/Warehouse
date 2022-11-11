@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -17,58 +16,39 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public List<ProductDTO> findAll() {
-        List <Product> productList = productRepository.findAll();
-        List <ProductDTO> productDTOList = new ArrayList<>();
-
-
-        for (Product product:productList) {
-            productDTOList.add(new ProductDTO(product));
-        }
-
-        return productDTOList;
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
     @Override
-    public ProductDTO findById(Long theId) {
-        Optional<Product> result = productRepository.findById(theId);
-
-        ProductDTO theProduct ;
-
-        if (result.isPresent()) {
-
-            theProduct = new ProductDTO(result.get()) ;
-        } else {
-            // we didn't find the warehouse
-            throw new RuntimeException("Did not find warehouse id - " + theId);
-        }
-
-        return theProduct;
+    public Product findById(Long theId) {
+        return this.productRepository.findById(theId).orElseThrow(() -> new RuntimeException("Product with id '" + theId + "' not found"));
     }
 
-    public ProductDTO findProductByBarcode(String theBarcode) {
-        Optional<Product> result = Optional.ofNullable(productRepository.findProductByBarcode(theBarcode));
-
-        ProductDTO theProduct;
-
-        if (result.isPresent()) {
-
-            theProduct = new ProductDTO(result.get()) ;
-        } else {
-            // we didn't find the product
-            throw new RuntimeException("Did not find product id - " + theBarcode);
-        }
-
-        return theProduct;
+    public Product findProductByBarcode(String theBarcode) {
+        return this.productRepository.findByBarcode(theBarcode).orElseThrow(() -> new RuntimeException("Product with barcode '" + theBarcode + "' not found"));
     }
 
     @Override
-    public void save(ProductDTO theProduct) {
-        productRepository.save(new Product(theProduct));
+    public Product save(ProductDTO theProduct) {
+//        boolean exists = this.productRepository.existsByBarcode(theProduct.getBarcode());
+//        if (exists) throw new RuntimeException("Barcode is already registered to another product");
+
+        return productRepository.save(new Product(theProduct));
     }
 
     @Override
     public void deleteById(Long theId) {
-        productRepository.deleteById(theId);
+        Product product = this.productRepository.findById(theId).orElseThrow(() -> new RuntimeException("Product with id '" + theId + "' not found"));
+        productRepository.delete(product);
+    }
+
+    @Override
+    public List<ProductDTO> toDtoList(List<Product> products) {
+        List<ProductDTO> list = new ArrayList<>();
+        for (Product p : products) {
+            list.add(new ProductDTO(p));
+        }
+        return list;
     }
 }

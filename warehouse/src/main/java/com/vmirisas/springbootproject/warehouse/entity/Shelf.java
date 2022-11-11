@@ -1,6 +1,5 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.vmirisas.springbootproject.warehouse.dto.ShelfDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,46 +22,12 @@ public class Shelf {
     @Column(name = "shelf_id")
     private Long shelfId;
 
-    @Column(name = "shelf_code")
-    private String shelfCode;
-
-//    @OneToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//            CascadeType.MERGE,
-//            CascadeType.PERSIST,
-//            CascadeType.REFRESH})
-//    @JoinColumn(name = "shelf_code")
-//    private List<Stock> stocks;
-//
-//    @OneToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//            CascadeType.MERGE,
-//            CascadeType.PERSIST,
-//            CascadeType.REFRESH})
-//    @JoinColumn(name = "shelf_code")
-//    private List<FormDetail> formDetailList;
-
-    @JsonManagedReference
-    @ManyToOne (fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
-
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//            CascadeType.MERGE,
-//            CascadeType.PERSIST,
-//            CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "stock",
-//            joinColumns = @JoinColumn(name = "shelf_code"),
-//            inverseJoinColumns = @JoinColumn (name = "barcode")
-//    )
-//    private List<Product> products;
+    @Column(name = "shelf_code")
+    private String shelfCode;
 
     public Shelf(ShelfDTO dto) {
         BeanUtils.copyProperties(dto, this);

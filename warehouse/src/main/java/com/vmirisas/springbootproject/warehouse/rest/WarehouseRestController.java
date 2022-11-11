@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/warehouse")
 public class WarehouseRestController {
 
     @Autowired
@@ -16,61 +16,34 @@ public class WarehouseRestController {
 
 
     // expose "/warehouses" and return list of warehouses
-    @GetMapping("/warehouse")
+    @GetMapping("")
     public List<WarehouseDTO> findAll() {
-        return warehouseService.findAll();
+        return this.warehouseService.toDtoList(this.warehouseService.findAll());
     }
 
-
     //  add mapping for GET /warehouses/{warehouseId}
-    @GetMapping("/warehouse/{warehouseId}")
+    @GetMapping("/{warehouseId}")
     public WarehouseDTO getWarehouse(@PathVariable Long warehouseId) {
-
-        WarehouseDTO theWarehouse = warehouseService.findById(warehouseId);
-
-        if(theWarehouse == null) {
-            throw new RuntimeException("Warehouse id not found - " + warehouseId);
-        }
-
-        return theWarehouse;
+        return new WarehouseDTO(this.warehouseService.findById(warehouseId));
     }
 
     // add mapping for POST /warehouses = add new warehouse
-    @PostMapping("/warehouse")
-    public WarehouseDTO addWarehouse(@RequestBody WarehouseDTO theWarehouse) {
-        // also just in case the pass an ID in JSON ... set id to null
-
-
-        theWarehouse.setWarehouseId(0L);
-
-        warehouseService.save(theWarehouse);
-
-        return theWarehouse;
-
+    @PostMapping("")
+    public WarehouseDTO addWarehouse(@RequestBody WarehouseDTO theWarehouse){
+        theWarehouse.setWarehouseId(null);
+        return new WarehouseDTO(this.warehouseService.save(theWarehouse));
     }
 
     // add mapping for PUT /warehouses = update existing warehouse
-    @PutMapping("/warehouse")
+    @PutMapping("")
     public WarehouseDTO updateWarehouse(@RequestBody WarehouseDTO theWarehouse) {
-
-        warehouseService.save(theWarehouse);
-
-        return theWarehouse;
+        return new WarehouseDTO(this.warehouseService.save(theWarehouse));
     }
 
     // add mapping for DELETE /warehouses/{warehouseId} = delete existing warehouse
-    @DeleteMapping("/warehouse/{warehouseId}")
+    @DeleteMapping("/{warehouseId}")
     public String deleteWarehouse(@PathVariable Long warehouseId) {
-
-        WarehouseDTO tempWarehouse = warehouseService.findById(warehouseId);
-
-        if (tempWarehouse == null) {
-
-            throw new RuntimeException("Warehouse id not found - " + warehouseId);
-        }
-
         warehouseService.deleteById(warehouseId);
-
-        return "Deleted warehouse id - " + warehouseId;
+        return "Warehouse with id '" + warehouseId + "' deleted";
     }
 }

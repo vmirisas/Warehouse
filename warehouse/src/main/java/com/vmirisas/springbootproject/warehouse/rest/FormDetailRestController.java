@@ -8,60 +8,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/formDetail")
 public class FormDetailRestController {
 
     @Autowired
     private FormDetailService formDetailService;
 
-    @GetMapping("formDetail")
+    @GetMapping("")
     public List<FormDetailDTO> findAll() {
-        return formDetailService.findAll();
+        return this.formDetailService.toDtoList(this.formDetailService.findAll());
     }
 
-    @GetMapping("/formDetail/{formDetailId}")
+    @GetMapping("/{formDetailId}")
     public FormDetailDTO getFormDetail(@PathVariable Long formDetailId) {
-
-        FormDetailDTO theFormDetail = formDetailService.findById(formDetailId);
-
-        if(theFormDetail == null) {
-            throw new RuntimeException("Form Detail id not found - " + formDetailId);
-        }
-
-        return theFormDetail;
+        return new FormDetailDTO(this.formDetailService.findById(formDetailId));
     }
 
-    @PostMapping("/formDetail")
+    @PostMapping("")
     public FormDetailDTO addFormDetail(@RequestBody FormDetailDTO theFormDetail) {
         // also just in case the pass an ID in JSON ... set id to null
-
-        theFormDetail.setFormDetailId(0L);
-
-        formDetailService.save(theFormDetail);
-
-        return theFormDetail;
+        theFormDetail.setFormDetailId(null);
+        return new FormDetailDTO(this.formDetailService.save(theFormDetail));
     }
 
-    @PutMapping("/formDetail")
+    @PutMapping("")
     public FormDetailDTO updateFormDetailDTO(@RequestBody FormDetailDTO theFormDetail) {
-
-        formDetailService.save(theFormDetail);
-
-        return theFormDetail;
+        return new FormDetailDTO(this.formDetailService.save(theFormDetail));
     }
 
-    @DeleteMapping("/formDetail/{formDetailId}")
+    @DeleteMapping("/{formDetailId}")
     public String deleteFormDetail(@PathVariable Long formDetailId) {
-
-        FormDetailDTO tempFormDetail = formDetailService.findById(formDetailId);
-
-        if (tempFormDetail == null) {
-
-            throw new RuntimeException("Form Detail id not found - " + formDetailId);
-        }
-
         formDetailService.deleteById(formDetailId);
-
         return "Deleted Transaction Form id - " + formDetailId;
     }
 }

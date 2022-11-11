@@ -1,6 +1,7 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
 import com.vmirisas.springbootproject.warehouse.dto.ProductDTO;
+import com.vmirisas.springbootproject.warehouse.entity.enums.ProductMeasurementUnit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,40 +26,12 @@ public class Product {
     @Column(name = "barcode")
     private String barcode;
 
-//    @OneToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//                    CascadeType.MERGE,
-//                    CascadeType.PERSIST,
-//                    CascadeType.REFRESH})
-//    @JoinColumn(name = "barcode")
-//    private List<Stock> stocks;
-
-//    @OneToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//                    CascadeType.MERGE,
-//                    CascadeType.PERSIST,
-//                    CascadeType.REFRESH})
-//    @JoinColumn(name = "barcode")
-//    private List<FormDetail> formDetailList;
-
     @Column(name = "description")
     private String description;
 
-//    @Column(name = "quantity")
-//    private int quantity;
-
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH,
-//                    CascadeType.MERGE,
-//                    CascadeType.PERSIST,
-//                    CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "stock",
-//            joinColumns = @JoinColumn(name = "barcode"),
-//            inverseJoinColumns = @JoinColumn (name = "shelf_code")
-//    )
-//    private List<Shelf> shelves;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "measurement_unit")
+    private ProductMeasurementUnit unit;
 
     public Product(ProductDTO dto) {
         BeanUtils.copyProperties(dto, this);

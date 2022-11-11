@@ -1,6 +1,6 @@
 package com.vmirisas.springbootproject.warehouse.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.vmirisas.springbootproject.warehouse.dto.ShelfDTO;
 import com.vmirisas.springbootproject.warehouse.dto.WarehouseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -23,7 +24,7 @@ public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "warehouse_id")
-    private long warehouseId;
+    private Long warehouseId;
 
     @Column(name = "warehouse_code")
     private String warehouseCode;
@@ -31,14 +32,14 @@ public class Warehouse {
     @Column(name = "description")
     private String description;
 
-    @JsonBackReference
-    @OneToMany (    fetch = FetchType.LAZY,
-                    mappedBy = "warehouse",
-                    cascade = {CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST,
-                    CascadeType.REFRESH})
-    private List<Shelf> shelves;
+//    @JsonBackReference
+    @OneToMany (fetch = FetchType.LAZY,
+                mappedBy = "warehouse",
+                cascade = {CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.PERSIST,
+                CascadeType.REFRESH})
+    private List<Shelf> shelves = new ArrayList<>();
 
     // define constructors
     // define getter/setter
@@ -54,6 +55,13 @@ public class Warehouse {
 
     public Warehouse(WarehouseDTO dto) {
         BeanUtils.copyProperties(dto, this);
+
+        for (ShelfDTO s : dto.getShelves()) {
+            Shelf shelf = new Shelf(s);
+            shelf.setWarehouse(this);
+
+            this.shelves.add(shelf);
+        }
     }
 
 }
