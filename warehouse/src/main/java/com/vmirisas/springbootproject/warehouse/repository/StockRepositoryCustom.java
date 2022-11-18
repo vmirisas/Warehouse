@@ -19,4 +19,8 @@ public interface StockRepositoryCustom {
 
     Stock getStockFromBarcodeAndDate(String barcode, Date date);
 
+
+//    List<StockDTO> getImportsSumUntilDate(StockSearch searchArgs);
+//
+//    List<StockDTO> getExportsSumUntilDate(StockSearch searchArgs);
 }

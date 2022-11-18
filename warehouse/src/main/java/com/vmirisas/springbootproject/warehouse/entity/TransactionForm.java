@@ -36,16 +36,26 @@ public class TransactionForm {
     private String description;
 
 //    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(//fetch = FetchType.EAGER,
             mappedBy = "transactionForm",
-            cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
+            cascade = {
+//            CascadeType.ALL
+            CascadeType.DETACH,
+//            CascadeType.MERGE,
             CascadeType.PERSIST,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH
+                        })
     private List<FormDetail> formDetailList;
 
 
     public TransactionForm(TransactionFormDTO dto) {
         BeanUtils.copyProperties(dto, this);
+
+//        for (FormDetailDTO d : dto.getFormDetailList()) {
+//            FormDetail detail = new FormDetail(d);
+//            detail.setTransactionForm(this);
+//
+//            this.formDetailList.add(detail);
+//        }
     }
 }

@@ -36,16 +36,6 @@ public class StockRestController {
     public StockDTO getProductStockUntilDate(@RequestParam String barcode,
                                              @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//        Date theDate = formatter.parse(date);
-//        StockDTO stockDTO = stockService.getStockFromBarcodeAndDate(barcode, date);
-//
-//        if (stockDTO == null) {
-//            throw new RuntimeException("Stock not found");
-//        }
-//
-//        return stockDTO;
-
         return null;
     }
 

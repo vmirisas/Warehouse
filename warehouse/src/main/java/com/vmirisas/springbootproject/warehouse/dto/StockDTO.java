@@ -17,10 +17,11 @@ public class StockDTO {
 
     private Long stockId;
 
-    private Long productId;
-    private String productBarcode;
+//    private Long productId;
+    private String barcode;
 
-    private Long shelfId;
+//    private Long shelfId;
+//    @JsonIgnore
     private String shelfCode;
 
     private int quantity;
@@ -30,11 +31,11 @@ public class StockDTO {
         BeanUtils.copyProperties(stock, this);
 
         Product product = stock.getProduct();
-        this.productId = product.getProductId();
-        this.productBarcode = product.getBarcode();
+//        this.productId = product.getProductId();
+        this.barcode = product.getBarcode();
 
         Shelf shelf = stock.getShelf();
-        this.shelfId = shelf.getShelfId();
+//        this.shelfId = shelf.getShelfId();
         this.shelfCode = shelf.getShelfCode();
 
 

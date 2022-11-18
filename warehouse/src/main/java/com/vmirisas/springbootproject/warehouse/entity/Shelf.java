@@ -22,7 +22,11 @@ public class Shelf {
     @Column(name = "shelf_id")
     private Long shelfId;
 
-    @ManyToOne()
+    @ManyToOne( cascade = {CascadeType.DETACH,
+//            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH,
+    })
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 

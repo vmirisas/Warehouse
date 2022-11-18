@@ -39,6 +39,6 @@ public class FormDetailRestController {
     @DeleteMapping("/{formDetailId}")
     public String deleteFormDetail(@PathVariable Long formDetailId) {
         formDetailService.deleteById(formDetailId);
-        return "Deleted Transaction Form id - " + formDetailId;
+        return "Deleted Form Detail id - " + formDetailId;
     }
 }

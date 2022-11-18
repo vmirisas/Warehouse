@@ -2,6 +2,7 @@ package com.vmirisas.springbootproject.warehouse.service;
 
 import com.vmirisas.springbootproject.warehouse.dto.ShelfDTO;
 import com.vmirisas.springbootproject.warehouse.entity.Shelf;
+import com.vmirisas.springbootproject.warehouse.entity.Warehouse;
 import com.vmirisas.springbootproject.warehouse.repository.ShelfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,46 +16,30 @@ public class ShelfServiceImpl implements ShelfService{
     @Autowired
     private ShelfRepository shelfRepository;
 
-//    @Autowired private WarehouseService warehouseService;
+    @Autowired
+    private WarehouseService warehouseService;
 
     @Override
     public List<Shelf> findAll() {
         return shelfRepository.findAll();
-//        List <Shelf> shelvesList = shelfRepository.findAll();
-//        List <ShelfDTO> shelvesDTOList = new ArrayList<>();
-//
-//        for (Shelf shelf:shelvesList) {
-//
-//            ShelfDTO shelfDTO = new ShelfDTO(shelf);
-//
-//            shelvesDTOList.add(shelfDTO);
-//        }
-//
-//        return shelvesDTOList;
     }
 
     @Override
     public Shelf findById(Long theId) {
         return this.shelfRepository.findById(theId).orElseThrow(() -> new RuntimeException("Shelf with id '" + theId + "' not found"));
-//        Optional<Shelf> result = shelfRepository.findById(theId);
-//
-//        ShelfDTO shelfDTO;
-//
-//        if (result.isPresent()) {
-//
-//            shelfDTO = new ShelfDTO(result.get()) ;
-//
-//        } else {
-//            // we didn't find the shelf
-//            throw new RuntimeException("Did not find shelf id - " + theId);
-//        }
-//
-//        return shelfDTO;
     }
 
     @Override
     public Shelf save(ShelfDTO theShelf) {
-        return shelfRepository.save(new Shelf(theShelf));
+        return shelfRepository.save(toEntity(theShelf));
+//        return shelfRepository.save(new Shelf(theShelf));
+    }
+
+    @Override
+    public void deleteById(Long theId) {
+        Shelf shelf = this.shelfRepository.findById(theId).orElseThrow(() -> new RuntimeException("Shelf with id '" + theId + "' not found"));
+//        shelfRepository.deleteById(theId);
+        shelfRepository.delete(shelf);
     }
 
     @Override
@@ -63,32 +48,11 @@ public class ShelfServiceImpl implements ShelfService{
     }
 
     @Override
-    public void deleteById(Long theId) {
-        shelfRepository.deleteById(theId);
-    }
-
-//    public Shelf findByShelfCode(String theCode) {
-//        Optional<Shelf> result = Optional.ofNullable(shelfRepository.findShelfByCode(theCode));
-//
-//        ShelfDTO theShelf;
-//
-//        if (result.isPresent()) {
-//
-//            theShelf = new ShelfDTO(result.get()) ;
-//        } else {
-//            // we didn't find the shelf
-//            throw new RuntimeException("Did not find shelf id - " + theCode);
-//        }
-//
-//        return theShelf;
-//    }
-
-    @Override
     public Shelf toEntity(ShelfDTO shelfDTO) {
         Shelf shelf = new Shelf(shelfDTO);
 
-//        Warehouse warehouse = this.warehouseService.findById(shelfDTO.getWarehouseId());
-//        shelf.setWarehouse(warehouse);
+        Warehouse warehouse = this.warehouseService.findById(shelfDTO.getWarehouseId());
+        shelf.setWarehouse(warehouse);
         return shelf;
     }
 

@@ -5,6 +5,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.sql.SQLExpressions;
 import com.vmirisas.springbootproject.warehouse.dto.StockDTO;
@@ -29,33 +30,20 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
     private final QShelf qShelf = QShelf.shelf;
     private final QProduct qProduct = QProduct.product;
 
+//    @Override
+//    public List<StockDTO> search(StockSearch searchArgs) {
+//        return generalQuery(projection())
+//                .where(predicate(searchArgs))
+//                .fetch();
+//    }
+
     @Override
     public List<StockDTO> search(StockSearch searchArgs) {
-        return generalQuery(projection())
+        return selectQuery(projection())
                 .where(predicate(searchArgs))
                 .fetch();
     }
 
-    @Override
-    public int getStockToExport(String barcode, String shelfCode) {
-        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
-        int quantity = qStockJPAQuery.select(qStock.quantity).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.shelf.shelfCode.eq(shelfCode))).orderBy(qStock.stockId.desc()).fetchFirst();
-
-        return quantity;
-    }
-
-    public Stock getStockExistence(String barcode, String shelfCode) {
-        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
-        Stock stock = qStockJPAQuery.select(qStock).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.shelf.shelfCode.eq(shelfCode))).orderBy(qStock.stockId.desc()).fetchFirst();
-
-        return stock;
-    }
-
-    public Stock getStockFromBarcodeAndDate (String barcode, Date date) {
-        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
-        Stock stock = qStockJPAQuery.select(qStock).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.date.lt(date))).orderBy(qStock.date.desc()).fetchFirst();
-        return stock;
-    }
 
     private Predicate predicate(StockSearch search) {
         BooleanBuilder pre = new BooleanBuilder();
@@ -70,6 +58,27 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
         return pre;
     }
 
+    @Override
+    public int getStockToExport(String barcode, String shelfCode) {
+        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
+        int quantity = qStockJPAQuery.select(qStock.quantity).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.shelf.shelfCode.eq(shelfCode))).orderBy(qStock.stockId.desc()).fetchFirst();
+
+        return quantity;
+    }
+    @Override
+    public Stock getStockExistence(String barcode, String shelfCode) {
+        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
+        Stock stock = qStockJPAQuery.select(qStock).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.shelf.shelfCode.eq(shelfCode))).orderBy(qStock.stockId.desc()).fetchFirst();
+
+        return stock;
+    }
+    @Override
+    public Stock getStockFromBarcodeAndDate (String barcode, Date date) {
+        JPAQuery<QStock> qStockJPAQuery = new JPAQuery<>(em);
+        Stock stock = qStockJPAQuery.select(qStock).from(qStock).where(qStock.product.barcode.eq(barcode).and(qStock.date.lt(date))).orderBy(qStock.date.desc()).fetchFirst();
+        return stock;
+    }
+
     private <U> JPAQuery<U> generalQuery(Expression<U> select) {
         JPAQuery<U> query = new JPAQuery<>(em);
         return query.select(select).from(qStock)
@@ -78,20 +87,35 @@ public class StockRepositoryCustomImpl implements StockRepositoryCustom {
                 .leftJoin(qStock.shelf, qShelf);
     }
 
+    private <U> JPAQuery<U> selectQuery(Expression<U> select) {
+        JPAQuery<U> query = new JPAQuery<>(em);
+        QStock s = new QStock("s");
+        QShelf sh = new QShelf("sh");
+        QProduct p = new QProduct("p");
+        query.select(select).from(qStock)
+                .innerJoin(qStock.shelf, qShelf)
+                .innerJoin(qStock.product, qProduct)
+                .where(qStock.date.eq(
+                        JPAExpressions.select(s.date.max()).from(s)
+                                .innerJoin(s.shelf, sh)
+                                .innerJoin(s.product, p)
+                                .where(sh.shelfCode.eq(qShelf.shelfCode).and(p.barcode.eq(qProduct.barcode)))
+                        )
+                );
+        return query;
+    }
+
     private FactoryExpression<StockDTO> projection() {
         return Projections.bean(StockDTO.class,
                 qStock.stockId,
 
-                qProduct.productId.as("productId"),
-                qProduct.barcode.as("productBarcode"),
+                qProduct.barcode.as("barcode"),
 
-                qShelf.shelfId.as("shelfId"),
                 qShelf.shelfCode.as("shelfCode"),
 
                 qStock.quantity,
                 qStock.date
-
-                );
+        );
     }
 
 }

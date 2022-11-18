@@ -33,12 +33,15 @@ public class Warehouse {
     private String description;
 
 //    @JsonBackReference
-    @OneToMany (fetch = FetchType.LAZY,
+    @OneToMany (//fetch = FetchType.EAGER,
                 mappedBy = "warehouse",
-                cascade = {CascadeType.DETACH,
-                CascadeType.MERGE,
+            cascade = {
+//                CascadeType.ALL
+                CascadeType.DETACH,
+//                CascadeType.MERGE,
                 CascadeType.PERSIST,
-                CascadeType.REFRESH})
+                CascadeType.REFRESH
+            })
     private List<Shelf> shelves = new ArrayList<>();
 
     // define constructors

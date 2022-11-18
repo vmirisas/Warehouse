@@ -26,22 +26,22 @@ public class FormDetail {
     @ManyToOne(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH
+            })
     @JoinColumn(name = "transaction_form_id")
     private TransactionForm transactionForm;
 //    @Column(name = "transaction_form_id")
 //    private Long transactionFormId;
 
-    @ManyToOne(fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH,
-        //CascadeType.MERGE,
+        CascadeType.MERGE,
         //CascadeType.PERSIST,
         CascadeType.REFRESH})
     @JoinColumn(name = "shelf_id")
     private Shelf shelf;
 
-    @ManyToOne(fetch = FetchType.LAZY,
+    @ManyToOne(fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH})
@@ -54,5 +54,6 @@ public class FormDetail {
 
     public FormDetail(FormDetailDTO dto) {
         BeanUtils.copyProperties(dto, this);
+
     }
 }

@@ -18,10 +18,10 @@ public class FormDetailDTO {
     private Long formDetailId;
     private Long transactionFormId;
 
-    private Long shelfId;
+//    private Long shelfId;
     private String shelfCode;
 
-    private Long productId;
+//    private Long productId;
     private String productDescription;
     private String barcode;
     private ProductMeasurementUnit productUnit;
@@ -35,11 +35,11 @@ public class FormDetailDTO {
         this.transactionFormId = form.getTransactionFormId();
 
         Shelf shelf = formDetail.getShelf();
-        this.shelfId = shelf.getShelfId();
+//        this.shelfId = shelf.getShelfId();
         this.shelfCode = shelf.getShelfCode();
 
         Product product = formDetail.getProduct();
-        this.productId = product.getProductId();
+//        this.productId = product.getProductId();
         this.productDescription = product.getDescription();
         this.barcode = product.getBarcode();
         this.productUnit = product.getUnit();

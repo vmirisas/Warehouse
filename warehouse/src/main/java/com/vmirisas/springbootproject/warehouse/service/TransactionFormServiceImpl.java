@@ -1,7 +1,10 @@
 package com.vmirisas.springbootproject.warehouse.service;
 
+import com.vmirisas.springbootproject.warehouse.dto.FormDetailDTO;
+import com.vmirisas.springbootproject.warehouse.dto.StockDTO;
 import com.vmirisas.springbootproject.warehouse.dto.TransactionFormDTO;
-import com.vmirisas.springbootproject.warehouse.entity.TransactionForm;
+import com.vmirisas.springbootproject.warehouse.entity.*;
+import com.vmirisas.springbootproject.warehouse.entity.enums.FormType;
 import com.vmirisas.springbootproject.warehouse.repository.TransactionFormRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +19,9 @@ public class TransactionFormServiceImpl implements TransactionFormService{
     private TransactionFormRepository transactionFormRepository;
 
     @Autowired
-    private FormDetailService formDetailService;
-
-    @Autowired
     private ProductService productService;
-
     @Autowired
     private ShelfService shelfService;
-
     @Autowired
     private StockService stockService;
 
@@ -191,7 +189,13 @@ public class TransactionFormServiceImpl implements TransactionFormService{
 
     @Override
     public TransactionForm save(TransactionFormDTO theForm) {
-        return this.transactionFormRepository.save(new TransactionForm(theForm));
+        return transactionFormRepository.save(toEntity(theForm));
+
+//        List<FormDetail> formDetailList = new ArrayList<>();
+//        for (FormDetailDTO detailDTO : theTransactionForm.getFormDetailList()) {
+//
+//        }
+//        return transactionFormRepository.save(new TransactionForm(theForm));
     }
 
     @Override
@@ -224,6 +228,81 @@ public class TransactionFormServiceImpl implements TransactionFormService{
             list.add(new TransactionFormDTO(f));
         }
         return list;
+    }
+
+    @Override
+    public TransactionForm toEntity(TransactionFormDTO transactionFormDTO) {
+        TransactionForm form = new TransactionForm(transactionFormDTO);
+
+        List <FormDetail> formDetailList = new ArrayList<>();
+
+        for (FormDetailDTO formDetailDTO : transactionFormDTO.getFormDetailList()){
+            FormDetail detail = new FormDetail();
+
+            detail.setTransactionForm(form);
+
+            Product product = this.productService.findProductByBarcode(formDetailDTO.getBarcode());
+            detail.setProduct(product);
+
+            Shelf shelf = this.shelfService.findShelfByCode(formDetailDTO.getShelfCode());
+            detail.setShelf(shelf);
+
+            detail.setQuantity(formDetailDTO.getQuantity());
+
+            formDetailList.add(detail);
+
+            if (form.getType() == FormType.IMPORT){
+
+                Stock stockExisting = new Stock(stockService.getStockToImport(product.getBarcode(), shelf.getShelfCode()));
+                Stock stock = new Stock();
+                if (stockExisting.getStockId() != null ) {
+
+                    int stockQuantity = stockExisting.getQuantity();
+                    int importedQuantity = detail.getQuantity();
+
+
+                    stock.setShelf(shelf);
+                    stock.setProduct(product);
+                    stock.setQuantity(stockQuantity + importedQuantity);
+                    stock.setDate(form.getDate());
+
+                } else {
+
+                    stock.setShelf(shelf);
+                    stock.setProduct(product);
+                    stock.setQuantity(detail.getQuantity());
+                    stock.setDate(form.getDate());
+                }
+                stockService.save(new StockDTO(stock));
+
+            } else if (form.getType() == FormType.EXPORT) {
+
+                int currentQuantity = stockService.getStockToExport(product.getBarcode(), shelf.getShelfCode());
+                int exportedQuantity = detail.getQuantity();
+
+                if (exportedQuantity > currentQuantity) {
+                    throw new RuntimeException("The exported quantity is greater than the current stock");
+                }
+
+                Stock stock = new Stock();
+                stock.setShelf(shelf);
+                stock.setProduct(product);
+                stock.setDate(form.getDate());
+                stock.setQuantity(currentQuantity - exportedQuantity);
+
+                stockService.save(stock);
+            }
+
+//            Stock stock = new Stock();
+//            stock.setShelf(shelf);
+//            stock.setProduct(product);
+//            stock.setQuantity(detail.getQuantity());
+//            stock.setDate(form.getDate());
+//
+//            stockService.save(stock);
+        }
+        form.setFormDetailList(formDetailList);
+        return form;
     }
 
 

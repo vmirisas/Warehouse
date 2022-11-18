@@ -9,8 +9,9 @@ public interface FormDetailService {
     List<FormDetail> findAll();
     FormDetail findById (Long theId);
     FormDetail save(FormDetailDTO theFormDetail);
-    //FormDetail save(FormDetail formDetail);
+    FormDetail save(FormDetail formDetail);
     void deleteById(Long theId);
+    FormDetail toEntity(FormDetailDTO formDetailDTO);
     List<FormDetailDTO> toDtoList(List<FormDetail> details);
 
 

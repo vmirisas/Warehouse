@@ -2,6 +2,8 @@ package com.vmirisas.springbootproject.warehouse.service;
 
 import com.vmirisas.springbootproject.warehouse.dto.StockDTO;
 import com.vmirisas.springbootproject.warehouse.dto.search.StockSearch;
+import com.vmirisas.springbootproject.warehouse.entity.Product;
+import com.vmirisas.springbootproject.warehouse.entity.Shelf;
 import com.vmirisas.springbootproject.warehouse.entity.Stock;
 import com.vmirisas.springbootproject.warehouse.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,12 @@ public class StockServiceImpl implements StockService{
     @Autowired
     private StockRepository stockRepository;
 
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ShelfService shelfService;
+
+
     @Override
     public List<Stock> findAll() {
         return stockRepository.findAll();
@@ -30,7 +38,7 @@ public class StockServiceImpl implements StockService{
 
     @Override
     public Stock save(StockDTO theStock) {
-        return stockRepository.save(new Stock(theStock));
+        return stockRepository.save(toEntity(theStock));
     }
 
     @Override
@@ -49,6 +57,14 @@ public class StockServiceImpl implements StockService{
         return stockRepository.search(search);
     }
 
+    @Override
+    public List<StockDTO> toDtoList(List<Stock> stockList) {
+        List<StockDTO> list = new ArrayList<>();
+        for (Stock s : stockList) {
+            list.add(new StockDTO(s));
+        }
+        return list;
+    }
     public StockDTO getStockToImport(String barcode, String shelfCode) {
         Optional<Stock> result = Optional.ofNullable(stockRepository.getStockExistence(barcode, shelfCode));
 
@@ -92,13 +108,21 @@ public class StockServiceImpl implements StockService{
 
         return stockDTO;
     }
-
     @Override
-    public List<StockDTO> toDtoList(List<Stock> stockList) {
-        List<StockDTO> list = new ArrayList<>();
-        for (Stock s : stockList) {
-            list.add(new StockDTO(s));
-        }
-        return list;
+    public Stock toEntity(StockDTO stockDTO) {
+        Stock stock = new Stock(stockDTO);
+
+        Shelf shelf = this.shelfService.findShelfByCode(stockDTO.getShelfCode());
+        stock.setShelf(shelf);
+
+        Product product = this.productService.findProductByBarcode(stockDTO.getBarcode());
+        stock.setProduct(product);
+
+        stock.setQuantity(stock.getQuantity());
+        stock.setDate(stockDTO.getDate());
+
+        return stock;
     }
+
+
 }

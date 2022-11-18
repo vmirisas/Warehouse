@@ -13,4 +13,5 @@ public interface TransactionFormService {
     void deleteById(Long theId);
     //Long getLastTransactionFormId();
     List<TransactionFormDTO> toDtoList(List<TransactionForm> forms);
+    TransactionForm toEntity(TransactionFormDTO transactionFormDTO);
 }
